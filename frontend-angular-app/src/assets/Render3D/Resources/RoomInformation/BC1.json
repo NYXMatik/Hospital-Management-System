@@ -1,0 +1,11 @@
+{
+    "RoomId": "BC1",
+    "specialization": "Cardiology",
+    "schedule": [
+        {
+            "startTime": "08:00",
+            "endTime": "11:00",
+            "activity": "Consultation"
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+@startuml UpdateSSD
+title Sequence Diagram - Update Account
+
+actor User
+participant "UpdateAccountComponent" as UAC
+participant "HttpClient" as HC
+participant "PatientAccount API" as API
+participant "localStorage" as LS
+
+User -> UAC: Submit Updated Details
+activate UAC
+UAC: Validate Email and Phone
+alt Invalid Data
+    UAC: Show Error Message
+else Valid Data
+    UAC -> HC: PUT /api/v1/PatientAccount/{userId}
+    HC -> API: Update Account in Backend
+    alt Update Success
+        API --> HC: Success Response
+        HC --> UAC: Notify Success
+        UAC -> LS: Update localStorage with New Data
+        UAC: Redirect to Manage Account Page
+    else Update Failure
+        API --> HC: Return Error
+        HC --> UAC: Notify Failure
+        UAC: Show Error Message
+    end
+end
+deactivate UAC
+
+@enduml

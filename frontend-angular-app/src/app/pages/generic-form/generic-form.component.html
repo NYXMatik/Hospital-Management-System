@@ -1,0 +1,72 @@
+<form (ngSubmit)="submitForm()">
+  <div *ngFor="let field of fields">
+    <label [for]="field.name">{{ field.label }}:</label>
+    <ng-container [ngSwitch]="field.type">
+      <!-- Text field -->
+      <input
+        *ngSwitchCase="'text'"
+        [id]="field.name"
+        [type]="field.type"
+        [(ngModel)]="formData[field.name]"
+        [name]="field.name"
+        [required]="field.required && !isUpdate"
+        [placeholder]="isUpdate ? 'Optional' : 'Mandatory'"
+      />
+      <!-- Email field -->
+      <input
+        *ngSwitchCase="'email'"
+        [id]="field.name"
+        type="email"
+        [(ngModel)]="formData[field.name]"
+        [name]="field.name"
+        [required]="field.required && !isUpdate"
+        [placeholder]="isUpdate ? 'Optional' : 'Mandatory'"
+      />
+      <!-- Checkbox field -->
+      <input
+        *ngSwitchCase="'checkbox'"
+        [id]="field.name"
+        type="checkbox"
+        [(ngModel)]="formData[field.name]"
+        [name]="field.name"
+      />
+      <!-- Numeric field -->
+      <input
+        *ngSwitchCase="'number'"
+        [id]="field.name"
+        type="number"
+        [(ngModel)]="formData[field.name]"
+        [name]="field.name"
+        [required]="field.required && !isUpdate"
+        [placeholder]="isUpdate ? 'Optional' : 'Mandatory'"
+      />
+      <!-- Date field -->
+      <input
+        *ngSwitchCase="'date'"
+        [id]="field.name"
+        type="date"
+        [(ngModel)]="formData[field.name]"
+        [name]="field.name"
+        [required]="field.required && !isUpdate"
+        [placeholder]="isUpdate ? 'Optional' : 'Mandatory'"
+      />
+      <!-- Selection field -->
+      <select
+        *ngSwitchCase="'select'"
+        [id]="field.name"
+        [(ngModel)]="formData[field.name]"
+        [name]="field.name"
+        [required]="field.required && !isUpdate"
+      >
+        <option value="" disabled selected>
+          {{ isUpdate ? '--' : 'Mandatory ' + field.label }}
+        </option>
+        <option *ngFor="let option of field.options" 
+                [ngValue]="option.value ? option.value : option">
+          {{option.label ? option.label : option}}
+        </option>
+      </select>
+    </ng-container>
+  </div>
+  <button *ngIf="showSubmit" type="submit">Save</button>
+</form>

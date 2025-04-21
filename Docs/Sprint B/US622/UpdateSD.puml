@@ -1,0 +1,19 @@
+@startuml Update
+title Sequence Diagram - Load Account Details
+
+actor User
+participant "UpdateAccountComponent" as UAC
+participant "localStorage" as LS
+
+User -> UAC: Access Update Page
+activate UAC
+UAC -> LS: Retrieve "user" from localStorage
+alt User Data Found
+    LS --> UAC: Return User Data
+    UAC: Parse and Display User Data
+else User Data Not Found
+    UAC: Initialize Default User Data
+end
+deactivate UAC
+
+@enduml

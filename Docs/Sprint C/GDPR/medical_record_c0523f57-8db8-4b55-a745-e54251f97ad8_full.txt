@@ -1,0 +1,27 @@
+=== COMPLETE MEDICAL RECORD ===
+
+=== ACCOUNT INFORMATION ===
+Profile ID: c0523f57-8db8-4b55-a745-e54251f97ad8
+Name: John Doe
+Email: johndoe@gmail.com
+Phone: +351911908271
+
+=== MEDICAL RECORD DETAILS ===
+Medical Record
+User ID: c0523f57-8db8-4b55-a745-e54251f97ad8
+
+Medical Conditions:
+- Cholera
+   Code: A04.0
+   Description: Cholera is an acute diarrheal infection caused by ingestion of food or water contaminated with the bacterium Vibrio cholerae.
+   Common Symptoms: Severe watery diarrhea, Vomiting, Dehydration, Muscle cramps
+
+- Rotavirus enteritis
+   Code: A08.0
+   Description: Rotavirus enteritis is an infection of the intestines caused by rotavirus, leading to gastroenteritis.
+   Common Symptoms: Watery diarrhea, Vomiting, Fever, Abdominal pain
+
+Allergies:
+- Peanut Allergy
+   Code: ICD-11: RA01.0
+   Description: A condition where the immune system reacts abnormally to peanuts, causing symptoms ranging from mild hives to severe anaphylaxis.

@@ -1,0 +1,129 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f7f9;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.account-details {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px 30px;
+  width: 400px;
+  text-align: left;
+}
+
+.account-details h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.account-details p {
+  margin: 8px 0;
+  color: #555;
+  font-size: 16px;
+}
+
+.account-details p strong {
+  color: #333;
+}
+
+.account-details h3 {
+  margin-top: 20px;
+  color: #333;
+}
+
+.account-details ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.account-details li {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actions button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.actions button:hover {
+  background-color: #0056b3;
+}
+
+.actions button:active {
+  background-color: #003d80;
+}
+
+.actions button:nth-child(2) {
+  background-color: #dc3545;
+}
+
+.actions button:nth-child(2):hover {
+  background-color: #b02a37;
+}
+
+.actions button:nth-child(2):active {
+  background-color: #802027;
+}
+
+.actions button:nth-child(3) {
+  background-color: #28a745;
+}
+
+.actions button:nth-child(3):hover {
+  background-color: #218838;
+}
+
+.actions button:nth-child(3):active {
+  background-color: #1a6c2c;
+}
+
+.actions button:nth-child(4) {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.actions button:nth-child(4):hover {
+  background-color: #e0a800;
+}
+
+.actions button:nth-child(4):active {
+  background-color: #c69500;
+}
+
+.actions button:nth-child(5) {
+  background-color: #6c757d;
+}
+
+.actions button:nth-child(5):hover {
+  background-color: #5a6268;
+}
+
+.actions button:nth-child(5):active {
+  background-color: #545b62;
+}

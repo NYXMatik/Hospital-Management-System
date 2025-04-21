@@ -1,0 +1,13 @@
+@startuml OperationTypeSearchByNameSSD
+actor Client
+participant "System" as System
+
+Client -> System : GET /api/OperationType/{name}
+
+alt Operation Found
+    System --> Client : 200 OK + Operation
+else Operation Not Found 
+    System --> Client : 404 Not Found
+end
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml SSD_CreateOperationType
+actor User
+participant System
+
+User -> System: clickCreateOperation()
+System --> User: showOperationForm()
+User -> System: enterOperationDetails()
+User -> System: addPhase()
+System --> User: showPhaseForm()
+User -> System: enterPhaseDetails()
+User -> System: addStaffToPhase()
+System --> User: showStaffForm()
+User -> System: enterStaffDetails()
+User -> System: saveOperation()
+System -> System: validateOperation()
+alt valid operation
+    System --> User: showSuccessMessage()
+else invalid operation
+    System --> User: showErrorMessage()
+end
+@enduml

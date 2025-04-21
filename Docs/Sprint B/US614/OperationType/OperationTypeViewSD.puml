@@ -1,0 +1,24 @@
+@startuml SD_ViewOperationDetails
+actor User
+participant "SearchOperationComponent" as Search
+participant "OperationTypeService" as Service
+participant "Backend API" as API
+
+User -> Search: openDetailsModal(operationName)
+activate Search
+
+Search -> Service: getOperationByName(name)
+activate Service
+Service -> API: GET /operations/{name}
+API --> Service: operationDetails
+Service --> Search: operation
+
+Search -> Search: setDetailedOperation()
+Search -> Search: showDetailsModal()
+
+User -> Search: closeDetailsModal()
+Search -> Search: clearDetailedOperation()
+
+deactivate Service
+deactivate Search
+@enduml

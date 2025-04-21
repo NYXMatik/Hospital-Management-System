@@ -1,0 +1,21 @@
+<div class="section-container">
+  <div class="section-header">
+    <button (click)="toggleExpand()">
+      {{ isExpanded ? '▲' : '▼' }}
+    </button>
+    <h4>Conditions</h4>
+  </div>
+  <div *ngIf="isExpanded" class="section-content">
+    <app-search-form 
+      [fields]="searchFields"
+      (search)="onSearch($event)">
+    </app-search-form>
+
+    <app-result-list
+      [items]="conditionItems"
+      [actions]="actions"
+      [displayConfig]="displayConfig"
+      (actionClick)="onAction($event)">
+    </app-result-list>
+  </div>
+</div>

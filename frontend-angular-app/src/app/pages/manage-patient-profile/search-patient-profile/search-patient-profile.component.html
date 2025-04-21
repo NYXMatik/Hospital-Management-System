@@ -1,0 +1,83 @@
+<div class="form-container">
+  
+  <!-- Botão para expandir/ocultar a seção de pesquisa -->
+  <button (click)="toggleExpansion()">
+    {{ isExpanded ? '▲' : '▼' }}
+  </button>
+
+  <h2>Search Patient Profile</h2>
+
+  <!-- Formulário de pesquisa (exibido quando isSearchExpanded é true) -->
+  <div *ngIf="isExpanded" class="form-content">
+
+    <!-- Left Side - Search Forms -->
+    <div class="search-forms">
+
+      <!-- Error message -->
+      <div *ngIf="error" class="error-message">
+        <p>{{ error }}</p>
+      </div>
+
+      <!-- Success message -->
+      <div *ngIf="success" class="success-message">
+        <p>{{ success }}</p>
+      </div>
+
+      <!-- Loading spinner -->
+      <div *ngIf="isLoading" class="loading">
+        <p>Loading...</p>
+      </div>
+
+      <div class="search-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" [(ngModel)]="name" placeholder="Enter name">
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" [(ngModel)]="email" placeholder="Enter email">
+
+        <label for="birth">Birth:</label>
+        <input type="date" id="birth" [(ngModel)]="birth" placeholder="Enter birth">
+
+        <label for="gender">Gender:</label>
+        <select id="gender" [(ngModel)]="gender">
+          <option value="" disabled selected>Select gender</option>
+          <option value="">--</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" id="phoneNumber" [(ngModel)]="phoneNumber" placeholder="Enter phone number">
+
+        <button (click)="searchPatients()">Search</button>
+      </div>
+    </div>
+
+    <!-- Right Side - Patient List -->
+    <div class="list-container">
+      <!-- Patient list -->
+      <div *ngIf="!isLoading && patientList.length > 0" class="list">
+        <ul>
+          <li *ngFor="let patient of patientList">
+            <p><strong>{{ patient.fullName }}</strong> - {{ patient.email }} ( {{ patient.birth }} ) </p>
+            <!-- Actions (Edit, Deactivate) -->
+            <button (click)="openEditModal(patient)">Edit</button>
+            <button (click)="deactivatePatient(patient)">Deactivate</button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- In case patients not found -->
+      <div *ngIf="!isLoading && patientList.length === 0">
+        <p>No patient found.</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isModalActive" class="modal-overlay">
+    <div class="modal-container">
+      <app-update-patient-profile [patient]="selectedPatient" [isModal]="true" (close)="closeEditModal()"></app-update-patient-profile>
+    </div>
+  </div>
+
+</div>

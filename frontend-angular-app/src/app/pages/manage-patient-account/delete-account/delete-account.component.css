@@ -1,0 +1,61 @@
+.delete-account-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #222222;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  p {
+    text-align: center;
+    font-size: 16px;
+    color: #555555;
+    margin-bottom: 20px;
+  }
+  
+  button.btn-delete {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: #ffffff;
+    background: #d9534f; /* Red background for danger action */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  
+  button.btn-delete:hover {
+    background: #c9302c; /* Darker red on hover */
+  }
+  
+  .loading-message {
+    text-align: center;
+    color: #007bff;
+  }
+  
+  .error-message {
+    color: #d9534f;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  .success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  

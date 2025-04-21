@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+:User: as User
+:Admin: as Admin
+:Patient: as Patient
+:Doctor: as Doctor
+
+
+Admin ---> (Register new backoffice users)
+User ---> (Reset my password if I forget it)
+User ---> (Log in to the system using my credentials)
+
+Patient ---> (Register for the healthcare application,\n so that I can create a user profile\n and book appointments online)
+Patient ---> (Update my user profile)
+Patient ---> (Delete my account and all associated data)
+Patient ---> (Log in to the healthcare system using\n my external IAM credentials)
+
+Admin ---> (Create a new patient profile)
+Admin ---> (Edit an existing patient profile)
+Admin ---> (Delete a patient profile)
+Admin ---> (List/search patient profiles by different attributes)
+
+Admin ---> (Create a new staff profile)
+Admin ---> (Edit a staff’s profile)
+Admin ---> (Deactivate a staff profile)
+Admin ---> (List/search staff profiles)
+
+Doctor ---> (Request an operation)
+Doctor ---> (Update an operation requisition)
+Doctor ---> (Remove an operation requisition)
+Doctor ---> (List/search operation requisitions)
+
+Admin ---> (Add new types of operations)
+Admin ---> (Edit existing operation types)
+Admin ---> (Remove obsolete or no longer performed operation types)
+Admin ---> (List/search operation types)
+
+
+
+
+@enduml

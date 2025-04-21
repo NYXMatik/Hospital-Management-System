@@ -1,0 +1,15 @@
+<header class="admin-header">
+    <div class="admin-title">Admin</div>
+    <nav class="admin-menu">
+      <button routerLink="/admin/medical-conditions-allergies">Medical Conditions & Allergies</button>
+      <button routerLink="/admin/manage-patient-profile">Manage Patients</button>
+      <button routerLink="/admin/manage-staffs">Manage Staff</button>
+      <button routerLink="/admin/manage-operations">Operation Types</button>
+      <button routerLink="/admin/three-renderer">3D Render</button>
+      <button routerLink="/admin/manage-planning">Manage Planning</button>
+      <button (click)="logout()">Logout</button>
+    </nav>
+  </header>
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+  </main>

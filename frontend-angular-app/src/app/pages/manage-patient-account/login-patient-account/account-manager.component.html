@@ -1,0 +1,30 @@
+<div class="account-details">
+  <h1>Welcome, {{ accountDetails.name?.fullName }}</h1>
+  <p><strong>Email:</strong> {{ accountDetails.email }}</p>
+  <p><strong>Phone Number:</strong> {{ accountDetails.phoneNumber }}</p>
+  <p><strong>Is Email Verified:</strong> {{ accountDetails.isEmailVerified ? 'Yes' : 'No' }}</p>
+  
+  <div *ngIf="appointments.length > 0">
+    <h3>Your Appointments</h3>
+    <ul>
+      <li *ngFor="let appointment of appointments">
+        <strong>{{ appointment.doctor }}</strong> on {{ appointment.appointmentDate | date }}<br>
+        <em>Status: {{ appointment.status }}</em><br>
+        Description: {{ appointment.description }}
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="appointments.length === 0">
+    <p>No appointments available.</p>
+  </div>
+  
+
+  <div class="actions">
+    <button (click)="updateAccount()">Update Account</button>
+    <button (click)="deleteAccount()">Delete Account</button>
+    <button (click)="bookAppointment()">Book Appointment</button>
+    <button (click)="logout()">Log Out</button>
+    <button (click)="downloadMedicalRecord()">Download Stored Data</button>
+    <button (click)="logout()">Log Out</button>
+  </div>
+</div>

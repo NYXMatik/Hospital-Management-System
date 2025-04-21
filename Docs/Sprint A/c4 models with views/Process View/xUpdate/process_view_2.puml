@@ -1,0 +1,19 @@
+@startuml getPackagingSD
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+box "<<System(C4)>>\n SARM"
+participant MasterDataLogistics as mdl <<Container(C4)>>
+mdl -> mdl: PUT updateX(...)
+alt There are no errors during operation
+mdl --> mdl: 200/201 x updated
+else There are errors during operation
+mdl --> mdl: 404 x Not Found
+end
+
+end box
+
+@enduml

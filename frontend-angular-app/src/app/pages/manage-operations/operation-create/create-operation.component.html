@@ -1,0 +1,83 @@
+<div class="form-container">
+  <button (click)="toggleExpansion()">
+    {{ isExpanded ? '▲ ' : '▼ ' }}
+  </button>
+
+  <h2>Create Operation Type</h2>
+
+  <div *ngIf="isExpanded">
+    <div *ngIf="message" class="message"
+      [class.success]="createdOperation"
+      [class.error]="!createdOperation">
+      <span [innerHTML]="message"></span>
+    </div>
+
+    <div *ngIf="!createdOperation">
+      <!-- Operation Name Form -->
+      <app-generic-form
+        [fields]="fields"
+        [formData]="operation"
+        [isUpdate]="isUpdate"
+        [showSubmit]="false"
+      ></app-generic-form>
+
+      <!-- Version Form -->
+      <div class="versions-container">
+        <div class="version-form" *ngFor="let version of operation.versions">
+          <app-generic-form
+            [fields]="versionFields"
+            [formData]="version"
+            [isUpdate]="isUpdate"
+            [showSubmit]="false"
+          ></app-generic-form>
+
+          <!-- Phases Container -->
+          <div class="phases-container">
+            <h4>Phases</h4>
+            <div class="phase-form" *ngFor="let phase of version.phases">
+              <app-generic-form
+                [fields]="phaseFields"
+                [formData]="phase"
+                [isUpdate]="isUpdate"
+                [showSubmit]="false"
+              ></app-generic-form>
+
+              <div class="staff-container">
+                <h6>Required Staff</h6>
+                <div class="staff-form" *ngFor="let staff of phase.staffList; let staffIndex = index">
+                  <app-generic-form
+                    [fields]="staffFields"
+                    [formData]="staff"
+                    [isUpdate]="isUpdate"
+                    [showSubmit]="false"
+                  ></app-generic-form>
+                  <button type="button" class="remove-btn" (click)="removeStaffFromPhase(phase, staffIndex)">Remove</button>
+                </div>
+                <button type="button" class="btn-secondary" (click)="addStaffToPhase(phase)">Add Staff</button>
+              </div>
+            </div>
+            <button type="button" class="btn-secondary" (click)="addPhase(version)">Add Phase</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Single Save Button -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save Operation</button>
+      </div>
+    </div>
+
+    <!-- Success View -->
+    <div *ngIf="createdOperation" class="created-details">
+      <h3>Operation Type Details:</h3>
+      <p><strong>Name:</strong> {{ createdOperation.name }}</p>
+      <div *ngFor="let version of createdOperation.versions">
+        <h4>Version {{ version.versionNumber }}</h4>
+        <p>Date: {{ version.date }}</p>
+        <p>Status: {{ version.status ? 'Active' : 'Inactive' }}</p>
+        <p>Pending: {{ version.pending ? 'Yes' : 'No' }}</p>
+      </div>
+      <button type="button" class="btn-primary" (click)="createNewOperation()">Create New Operation</button>
+    </div>
+  </div>
+</div>

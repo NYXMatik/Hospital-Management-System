@@ -1,0 +1,44 @@
+@startuml
+actor User
+
+box "Frontend/UI" #LightBlue
+participant "SPA" as Frontend
+end box
+
+box "Backend/API" #LightGreen
+participant "WebApi" as Backend
+end box
+
+box "Database" #LightYellow
+participant "Database" as DB
+end box
+
+User -> Frontend: Access "Create New X"
+activate Frontend
+Frontend -> Frontend: Render form
+
+User -> Frontend: Fill out the form and submit
+Frontend -> Backend: POST /api/X
+activate Backend
+
+Backend -> Backend: Validate data
+Backend -> DB: Insert record into X
+activate DB
+
+alt Success
+    DB --> Backend: Confirmation
+    Backend --> Frontend: Return created object
+    Frontend -> User: Display success message
+else Failure
+    DB --> Backend: Error (e.g., invalid data)
+    deactivate DB
+    Backend --> Frontend: Return error details
+    deactivate Backend
+    Frontend -> User: Display error message
+    deactivate Frontend
+end
+
+@enduml
+
+
+

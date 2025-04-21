@@ -1,0 +1,61 @@
+@startuml
+
+rectangle "User Aggregate" #babfdd{
+class User <<AggregateRoot>> <<Entity>>
+}
+
+rectangle "Patient Aggregate" #fabfdd{
+class Patient <<AggregateRoot>> <<Entity>>
+class MedicalCondition_Record <<Entity>>
+class AppointmentHistory <<Entity>>
+
+Patient "1" <-- "*" MedicalCondition_Record : presents
+Patient "1" <-- "1..*" AppointmentHistory : presents
+}
+
+rectangle "Staff Aggregate" #bbffdd{
+class Staff <<AggregateRoot>> <<Entity>>
+}
+
+rectangle "Specialization Aggregate" #bbffdd{
+class Specialization <<Entity>>
+}
+
+rectangle "OperationRequest Aggregate" #ccbbff{
+class OperationRequest <<AggregateRoot>> <<Entity>>
+}
+
+rectangle "Operation Type Aggregate" #eefcdd{
+class OperationType <<AggregateRoot>> <<Entity>>
+}
+
+rectangle "Operation Type History Aggregate" #bcdffe{
+class OperationTypeHistory <<AggregateRoot>> <<Entity>>
+}
+
+rectangle "Appointment Aggregate" #eefccc{
+class Appointment <<AggregateRoot>> <<Entity>>
+}
+
+rectangle "SurgeryRoom Aggregate" #ddfccc{
+class SurgeryRoom <<AggregateRoot>> <<Entity>>
+}
+
+User "0..1" -left-> "0..1" Patient : can be
+User "0..1" -left-> "0..1" Staff : can be
+
+OperationRequest "*" -up-> "1" Patient : are required
+OperationRequest "*" --> "1" Staff : are required
+OperationRequest "*" -up-> "1" OperationType: is defined by
+
+OperationTypeHistory "1" --> "1..*" OperationType: records
+
+Appointment "1" -up-> "1" OperationRequest : is schedule by
+Appointment "*" --> "1" SurgeryRoom : is linked to a
+
+MedicalCondition_Record "*" --> "1" Staff: is recorded by
+AppointmentHistory "*" --> "1" Staff: is recorded by
+
+Staff "*" --> "1" Specialization : owns a
+
+@enduml

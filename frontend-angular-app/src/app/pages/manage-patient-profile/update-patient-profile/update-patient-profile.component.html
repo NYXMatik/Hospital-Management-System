@@ -1,0 +1,37 @@
+<div class="update-container" [class.modal]="isModal">
+  <div class="modal-header" *ngIf="isModal">
+    <button class="close-button" (click)="closeModal()">&#x2715;</button>
+  </div>
+
+  <h2>Update Patient Profile</h2>
+
+  <!-- Sucess or error message -->
+  <div *ngIf="message" class="message"
+      [class.success]="updatedPatient"
+      [class.error]="!updatedPatient">
+      <!--{{ message }}-->
+      <span [innerHTML]="message"></span>
+  </div>
+
+  <app-generic-form
+    *ngIf="!updatedPatient"
+    [fields]="fields"
+    [formData]="patient"
+    [isUpdate]="isUpdate"
+    (formSubmit)="onSubmit()"
+  ></app-generic-form>
+
+
+  <!-- Patient updated details -->
+  <div *ngIf="updatedPatient" class="updated-details">
+    <h3>Patient Details:</h3>
+    <p><strong>Full Name:</strong> {{ updatedPatient.fullName }}</p>
+    <p><strong>Email:</strong> {{ updatedPatient.email }}</p>
+    <p><strong>Phone Number:</strong> {{ updatedPatient.phoneNumber }}</p>
+    <p><strong>Birth Date:</strong> {{ updatedPatient.birth }}</p>
+    <p><strong>Gender:</strong> {{ updatedPatient.gender }}</p>
+    <p><strong>Emergency Contact:</strong> {{ updatedPatient.emergencyContact }}</p>
+  </div>
+
+
+</div>

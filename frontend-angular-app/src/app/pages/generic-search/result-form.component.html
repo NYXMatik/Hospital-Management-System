@@ -1,0 +1,25 @@
+<div class="list-container">
+  <div *ngIf="items.length > 0" class="list">
+    <ul>
+      <li *ngFor="let item of items">
+        <div>
+          <p><strong>{{ getTitle(item) }}</strong></p>
+          <p *ngIf="getSubtitle(item)">{{ getSubtitle(item) }}</p>
+          <p *ngIf="getDetails(item)">{{ getDetails(item) }}</p>
+        </div>
+
+        <div class="button-group">
+          <button
+            *ngFor="let action of actions"
+            (click)="triggerAction(action.action, item)"
+            [class]="action.class || ''">
+            {{ action.label }}
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="items.length === 0">
+    <p>Not found.</p>
+  </div>
+</div>

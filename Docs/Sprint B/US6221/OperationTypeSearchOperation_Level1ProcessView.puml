@@ -1,0 +1,11 @@
+@startuml OperationTypeSearchSSD
+actor Client
+participant "System" as System
+
+Client -> System : GET /api/OperationType
+
+alt Success
+    System --> Client : 200 OK + Operations List
+end
+
+@enduml

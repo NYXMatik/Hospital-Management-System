@@ -1,0 +1,54 @@
+<!-- operation-disable.component.html -->
+<div class="update-container" [class.modal]="isModal">
+  <div class="modal-header" *ngIf="isModal">
+    <button class="close-button" (click)="closeModal()">&#x2715;</button>
+  </div>
+
+  <h2>Disable Operation</h2>
+  
+  <div *ngIf="message" class="message"
+    [class.success]="disabledOperation"
+    [class.error]="!disabledOperation">
+    <span [innerHTML]="message"></span>
+  </div>
+
+  <div class="search-form" *ngIf="!operation">
+    <app-generic-form
+      [fields]="fields"
+      [formData]="{operationName: operationName}"
+      (formSubmit)="searchOperation()"
+    ></app-generic-form>
+  </div>
+
+  <div class="current-version" *ngIf="operation && latestVersion">
+    <h3>Current Version Details</h3>
+    <p><strong>Operation:</strong> {{ operation.name }}</p>
+    <p><strong>Version:</strong> {{ latestVersion.versionNumber }}</p>
+    <p><strong>Date:</strong> {{ latestVersion.date }}</p>
+    <p><strong>Status:</strong> {{ latestVersion.status ? 'Active' : 'Inactive' }}</p>
+    <p><strong>Phases:</strong> {{ latestVersion.phases.length }}</p>
+
+    <div class="warning-message">
+      <p>Are you sure you want to disable this operation?</p>
+      <p>This will create a new version with disabled status.</p>
+    </div>
+
+    <div class="action-buttons">
+      <button (click)="confirmDisable()" class="btn-danger" [disabled]="loading">Disable</button>
+      <button (click)="cancel()" class="btn-secondary" [disabled]="loading">Cancel</button>
+    </div>
+  </div>
+
+  <div *ngIf="disabledOperation" class="updated-details">
+    <h3>Operation Disabled</h3>
+    <p><strong>Name:</strong> {{ disabledOperation.name }}</p>
+    <p><strong>New Version:</strong> {{ getLatestVersion()?.versionNumber }}</p>
+    <p><strong>Status:</strong> Inactive</p>
+    
+    <button (click)="cancel()" class="btn-primary">Return to Operations</button>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    Processing...
+  </div>
+</div>

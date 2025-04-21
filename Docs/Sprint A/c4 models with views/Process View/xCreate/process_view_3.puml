@@ -1,0 +1,123 @@
+@startuml sd
+
+participant Route as route
+participant XController as ctrl
+participant XService as svc
+participant CreateXDTO as dto
+participant PresentXDTO as presentDTO
+participant IXRepo as irepo
+participant XRepo as repo
+participant XMapper as mapper
+participant IXFactory as ifactory
+participant XFactory as factory
+participant X as staff
+participant XDataModel as schema
+participant XContext as context
+
+activate route
+
+route -> ctrl : PostX(CreateXDTO xDTO)
+activate ctrl
+
+ctrl -> svc : Add(xDTO, _errorMessages)
+activate svc
+svc -> irepo : GetXByIdAsync(id)
+activate irepo
+irepo -> repo : implements XExists(y)
+deactivate irepo
+activate repo
+
+alt X exists
+    repo --> svc : X can be created
+else failure
+    repo --> svc : X already exists
+end
+
+deactivate repo
+
+note right of svc : see generate_id.puml for Staff entity
+
+note right of svc : for Patient entity
+svc -> svc: GenerateXId(...)
+
+svc -> dto : ToDomain(staffDTO, staffId)
+
+activate dto
+
+dto -> staff: new Staff(...)
+
+activate staff
+
+staff --> dto: staff
+
+deactivate staff
+
+dto --> svc: staff
+
+deactivate dto
+
+svc -> repo: Add(staff)
+
+activate repo
+
+repo -> mapper: ToDataModel(staff)
+activate mapper
+
+mapper -> schema: new StaffDataModel(staff)
+activate schema
+
+schema --> mapper: staffDataModel
+deactivate schema
+
+mapper --> repo: staffDataModel
+
+deactivate mapper
+
+repo -> context: save staffDataModel
+activate context
+
+deactivate context
+repo -> mapper: ToDomain(staffDataModelSaved)
+
+activate mapper
+mapper -> ifactory: NewX(...)
+activate ifactory
+
+ifactory -> factory: NewX(...)
+deactivate ifactory
+activate factory
+
+activate staff
+factory -> staff: new X(...)
+deactivate factory
+deactivate staff
+
+mapper --> repo : staffSaved
+deactivate mapper
+
+repo --> irepo: staffSaved
+
+activate irepo
+irepo --> svc: staffSaved
+deactivate irepo
+
+svc -> presentDTO: ToDTO(staffSaved)
+activate presentDTO
+
+presentDTO --> svc: staffDTO
+deactivate presentDTO
+
+svc -> ctrl: present staffDTO
+
+deactivate svc
+
+ctrl --> route
+alt caso de sucesso
+    ctrl --> route : Envia um código 201 (POST)
+else caso de insucesso
+    ctrl --> route : Envia um código 404 (NOT FOUND)
+end
+deactivate ctrl
+deactivate route
+
+@enduml

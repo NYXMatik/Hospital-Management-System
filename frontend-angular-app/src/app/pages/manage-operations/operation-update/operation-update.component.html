@@ -1,0 +1,64 @@
+<!-- update-operation.component.html -->
+<div class="update-container" [class.modal]="isModal">
+  <div class="modal-header" *ngIf="isModal">
+    <button class="close-button" (click)="closeModal()">&#x2715;</button>
+  </div>
+
+  <h2>Update Operation</h2>
+
+  <div *ngIf="message" class="message"
+    [class.success]="updatedOperation"
+    [class.error]="!updatedOperation">
+    <span [innerHTML]="message"></span>
+  </div>
+
+  <div *ngIf="!updatedOperation" class="version-form">
+    <h3>New Version ({{ newVersion.versionNumber }})</h3>
+    
+    <app-generic-form
+      [fields]="versionFields"
+      [formData]="newVersion"
+      [isUpdate]="isUpdate"
+      [showSubmit]="false"
+    ></app-generic-form>
+
+    <div class="phases-section">
+      <h3>Phases</h3>
+      <div class="phase-card" *ngFor="let phase of newVersion.phases; let i = index">
+        <app-generic-form
+          [fields]="phaseFields"
+          [formData]="phase"
+          [isUpdate]="isUpdate"
+          [showSubmit]="false"
+        ></app-generic-form>
+
+        <div class="staff-section">
+          <h4>Required Staff</h4>
+          <div class="staff-item" *ngFor="let staff of phase.staffList; let sIndex = index">
+            <app-generic-form
+              [fields]="staffFields"
+              [formData]="staff"
+              [isUpdate]="isUpdate"
+              [showSubmit]="false"
+            ></app-generic-form>
+            <button type="button" (click)="removeStaffFromPhase(phase, sIndex)">Remove</button>
+          </div>
+          <button type="button" (click)="addStaffToPhase(phase)">Add Staff</button>
+        </div>
+      </div>
+      <button type="button" (click)="addPhase()">Add Phase</button>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="onSubmit()">Save Version</button>
+    </div>
+  </div>
+
+  <div *ngIf="updatedOperation" class="updated-details">
+    <h3>Operation Details:</h3>
+    <p><strong>Name:</strong> {{ updatedOperation.name }}</p>
+    <p><strong>Latest Version:</strong> {{ newVersion.versionNumber }}</p>
+    <p><strong>Status:</strong> {{ newVersion.status ? 'Active' : 'Inactive' }}</p>
+    <p><strong>Phases:</strong> {{ newVersion.phases.length }}</p>
+  </div>
+</div>

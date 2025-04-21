@@ -1,0 +1,79 @@
+@startuml sd
+
+participant Route as route
+participant xController as ctrl
+participant xService as svc
+participant xDTO as dto
+participant xIRepository as irepo
+participant xRepository as repo
+participant xMapper as mapp
+participant xDataModel as dm
+participant xContext as context
+
+
+activate route
+route -> ctrl : PutPatient(id, xDTO)
+activate ctrl
+ctrl -> svc : Update(id, xDTO, _errorMessages)
+activate svc
+svc -> irepo : GetPatientByIdAsync(id)
+activate irepo
+irepo -> repo : implemnts GetPatientByIdAsync
+activate repo
+repo -> context : Set<PatientDataModel>()\n.FirstAsync(p => p.id==id)
+activate context
+context --> repo : return xDataModel with Id
+deactivate context
+alt xDataModel is Active
+    repo -> mapp : ToDomain(xDataModel)
+    activate mapp
+    note right of mapp: See "ToDomainMapper.puml"
+    mapp --> repo : return x
+    deactivate mapp
+    repo --> irepo : return x
+else xDataModel is Inactive
+    repo --> irepo : return null
+end
+deactivate repo
+irepo --> svc : return x with id
+deactivate irepo
+alt x != null && x is Active
+    svc -> dto : UpdateToDomain(x, xUpDTO);
+    activate dto
+    dto --> svc : return x updated
+    deactivate dto
+    svc -> irepo : Update(x, errorMessages)
+    activate irepo
+    irepo -> repo : implemnts Update
+    activate repo
+    repo -> context : Set<PatientDataModel>()\n.FirstAsync(p => p.id==id)
+    activate context
+    context --> repo : return xDataModel with Id
+    deactivate context
+    repo -> mapp : UpdateDataModel(xDataModel, x);
+    activate mapp
+    mapp --> repo
+    repo -> context : save xDataModel
+    activate context
+    deactivate context
+    repo -> context : SaveChangesAsync()
+    activate context
+    deactivate context
+    repo --> irepo: return x
+    deactivate repo
+    irepo --> svc : return success
+    deactivate irepo
+    svc --> ctrl : return success
+else x == null || x is Inactive
+    svc --> ctrl : return failure (send mensage - "X Not found")
+end
+deactivate svc
+alt success case
+    ctrl --> route : Send code 200 (PUT)
+else failure case
+    ctrl --> route : Send code 404 (NOT FOUND)
+end
+deactivate ctrl
+deactivate route
+
+@enduml

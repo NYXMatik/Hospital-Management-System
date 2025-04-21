@@ -1,0 +1,29 @@
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+}
+.admin-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+.admin-menu {
+  display: flex;
+  gap: 15px;
+}
+.admin-menu button {
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+.admin-menu button:hover {
+  text-decoration: underline;
+}
+.admin-content {
+  padding: 20px;
+}

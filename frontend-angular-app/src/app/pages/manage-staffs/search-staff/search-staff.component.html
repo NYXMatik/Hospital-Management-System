@@ -1,0 +1,73 @@
+<div class="form-container">
+
+    <!-- Button to expand/hide the search section -->
+    <button (click)="toggleExpansion()">
+      {{ isExpanded ? '▲ ' : '▼ ' }}
+    </button>
+
+    <h2>Search Staff Profile</h2>
+
+    <div *ngIf="isExpanded" class="form-content">
+      <div class="search-forms">
+
+        <!-- Error message -->
+        <div *ngIf="error" class="error-message">
+          <p>{{ error }}</p>
+        </div>
+
+        <!-- Success message -->
+        <div *ngIf="success" class="success-message">
+          <p>{{ success }}</p>
+        </div>
+
+        <!-- Loading spinner -->
+        <div *ngIf="isLoading" class="loading">
+          <p>Loading...</p>
+        </div>
+
+        <div class="search-form">
+          <label for="name">Name:</label>
+          <input type="text" id="name" [(ngModel)]="name" placeholder="Enter name">
+
+          <label for="email">Email:</label>
+          <input type="text" id="email" [(ngModel)]="email" placeholder="Enter email">
+
+          <label for="specialization">Specialization:</label>
+          <select id="specialization" [(ngModel)]="specialization" placeholder="Enter specialization">
+            <option value="">--</option>
+            <option *ngFor="let specializationOption of specializations" [value]="specializationOption">
+              {{ specializationOption }}
+            </option>
+          </select>
+
+          <button (click)="searchStaffs()">Search</button>
+        </div>
+      </div>
+
+      <!-- Staff List -->
+      <div class="list-container">
+        <div *ngIf="!isLoading && staffList.length > 0" class="list">
+          <ul>
+            <li *ngFor="let staff of staffList">
+              <p><strong>{{ staff.fullName }}</strong> - {{ staff.email }} - {{ staff.specialization }}</p>
+              <button (click)="openEditModal(staff)">Edit</button>
+              <button (click)="deactivateStaff(staff)">Deactivate</button>
+            </li>
+          </ul>
+        </div>
+
+        <div *ngIf="!isLoading && staffList.length === 0">
+          <p>No staff found.</p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isModalActive" class="modal-overlay">
+        <div class="modal-container">
+          <app-update-staff [staff]="selectedStaff" [isModal]="true" (close)="closeEditModal()"></app-update-staff>
+        </div>
+    </div>
+
+  </div>
+
+

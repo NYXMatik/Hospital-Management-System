@@ -1,0 +1,15 @@
+@startuml OperationTypeDisableSSD
+actor Client
+participant "System" as System
+
+Client -> System : DELETE /api/OperationType/{name}
+
+alt Operation Not Found
+    System --> Client : 404 Not Found
+else Invalid Request
+    System --> Client : 400 Bad Request
+else Success
+    System --> Client : 200 OK + Disabled Operation
+end
+
+@enduml

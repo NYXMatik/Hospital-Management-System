@@ -1,0 +1,17 @@
+<div class="container">
+  <!-- Welcome message and instructions -->
+  <div class="welcome-container">
+    <h2>Welcome to the page where you can manage operations!</h2>
+  </div>
+
+  <div class="search-container">
+    <router-outlet name="search"></router-outlet>
+  </div>
+
+  <div class="create-container">
+    <router-outlet name="create"></router-outlet>
+  </div>
+
+  <!-- Router outlet for navigating to other components -->
+  <router-outlet></router-outlet>
+</div>

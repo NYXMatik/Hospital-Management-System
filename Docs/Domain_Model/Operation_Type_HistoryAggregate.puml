@@ -1,0 +1,44 @@
+@startuml
+
+rectangle "Operation Type History Aggregate" #bcdffe{
+    class OperationTypeHistory <<AggregateRoot>> <<Entity>>
+    class Version << (V, pink) Value Object >> <<identifier>>{
+         - int id
+    }
+    class Name << (V, pink) Value Object >>{
+        --unique--
+        - String name
+    }
+    class Date << (V, pink) Value Object >>{
+         - Date beginDate
+         - Date endDate
+    }
+
+    class RequiredStaffBySpecialization << (V, pink) Value Object >>{
+        - String specialization
+        - String staffType
+        - int amountMin
+        - int amountDesired
+    }
+    class SurgeryPhase << (V, pink) Value Object >>{
+        - String phaseName -unique-
+        - String description
+        - Time estimatedDuration
+    }
+
+    note top of OperationTypeHistory
+         SurgeryPhase and RequiredStaffBySpecialization
+         are shared between this aggregate
+         and OperationType aggregate
+    end note
+
+    OperationTypeHistory "1" --> "1" Version : contains
+    OperationTypeHistory "1" --> "1" Name : is associated with
+    OperationTypeHistory "1" --> "1" Date : owns a
+
+    Version "1" *-- "3..*" SurgeryPhase : owns
+    SurgeryPhase "1" *-right- "1..*" RequiredStaffBySpecialization : needs
+
+}
+
+@enduml

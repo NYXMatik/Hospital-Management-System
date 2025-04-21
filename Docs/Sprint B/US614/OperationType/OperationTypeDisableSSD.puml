@@ -1,0 +1,40 @@
+@startuml Detailed Sequence Diagram
+skinparam sequenceMessageAlign center
+
+actor User
+participant "OperationDisableComponent" as ODC
+participant "OperationTypeService" as Service
+participant "HttpClient" as HTTP
+database "Backend API" as API
+
+User -> ODC: searchOperation()
+activate ODC
+ODC -> Service: getOperationByName(name)
+activate Service
+Service -> HTTP: GET /api/operation-type/{name}
+HTTP -> API: HTTP Request
+API --> HTTP: Return Operation Data
+HTTP --> Service: Operation Response
+Service --> ODC: Operation Details
+deactivate Service
+ODC --> User: Display Operation Info
+
+User -> ODC: confirmDisable()
+activate ODC
+ODC -> ODC: Create New Version DTO
+ODC -> Service: updateOperation(name, newVersion)
+activate Service
+Service -> HTTP: POST /api/operation-type/{name}
+HTTP -> API: HTTP Request
+API --> HTTP: Updated Operation
+HTTP --> Service: Operation Response
+Service -> Service: operationUpdated.next()
+Service --> ODC: Success Response
+deactivate Service
+ODC --> User: Show Success Message
+deactivate ODC
+
+User -> ODC: cancel()
+ODC -> ODC: Navigate to Operations List
+
+@enduml

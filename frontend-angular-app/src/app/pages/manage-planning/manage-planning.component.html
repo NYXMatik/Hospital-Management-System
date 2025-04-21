@@ -1,0 +1,22 @@
+<div class="container">
+    <h2>Schedule Planning</h2>
+    <div class="button-container">
+      <button (click)="getNormalSchedule()">Get Normal Schedule</button>
+      <button (click)="getOccupancySchedule()">Get Occupancy Schedule</button>
+    </div>
+  
+    <div *ngIf="schedule" class="schedule-container">
+      <h3>Room Schedule</h3>
+      <div *ngFor="let room of schedule.roomSchedule">
+        <p>ID: {{room.id}} | Start: {{room.start}} | End: {{room.end}}</p>
+      </div>
+  
+      <h3>Staff Schedules</h3>
+      <div *ngFor="let staff of schedule.staffSchedules">
+        <h4>Staff: {{staff.staff}}</h4>
+        <div *ngFor="let event of staff.schedule">
+          <p>ID: {{event.id}} | Start: {{event.start}} | End: {{event.end}}</p>
+        </div>
+      </div>
+    </div>
+  </div>

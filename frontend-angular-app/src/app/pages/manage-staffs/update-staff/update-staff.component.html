@@ -1,0 +1,35 @@
+<div class="update-container" [class.modal]="isModal">
+  <div class="modal-header" *ngIf="isModal">
+    <button class="close-button" (click)="closeModal()">&#x2715;</button>
+  </div>
+
+  <h2>Update Staff Profile</h2>
+
+  <!-- Sucess or error message -->
+  <div *ngIf="message" class="message"
+    [class.success]="updatedStaff"
+    [class.error]="!updatedStaff">
+    <span [innerHTML]="message"></span>
+  </div>
+
+  <app-generic-form
+    *ngIf="!updatedStaff"
+    [fields]="fields"
+    [formData]="staff"
+    [isUpdate]="isUpdate"
+    (formSubmit)="onSubmit()"
+  ></app-generic-form>
+
+  <!-- Staff updated details -->
+  <div *ngIf="updatedStaff" class="updated-details">
+    <h3>Staff Details:</h3>
+    <p><strong>Full Name:</strong> {{ updatedStaff.fullName }}</p>
+    <p><strong>License Number:</strong> {{ updatedStaff.licenseNumber }}</p>
+    <p><strong>Email:</strong> {{ updatedStaff.email }}</p>
+    <p><strong>Phone Number:</strong> {{ updatedStaff.phoneNumber }}</p>
+    <p><strong>Specialization:</strong> {{ updatedStaff.specialization }}</p>
+  </div>
+</div>
+
+
+

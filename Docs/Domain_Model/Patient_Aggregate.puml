@@ -1,0 +1,65 @@
+@startuml
+
+rectangle "Patient Aggregate" #fabfdd{
+class Patient <<AggregateRoot>> <<Entity>>
+    class MedicalRecordNum << (V, pink) Value Object >> <<identifier>>{
+        - String medicalRecordNum
+    }
+    class Name << (V, pink) Value Object >>{
+        - String firstName
+        - String lastName
+        - String fullName
+    }
+    class DateOfBirth << (V, pink) Value Object >>{
+        - Date dateOfBirth
+    }
+    class Gender << (V, pink) Value Object >>{
+        - String gender OR Enum ???
+    }
+    class ContactInfo << (V, pink) Value Object >>{
+        - String email -unique-
+        - String phoneNumber -unique-
+    }
+    class EmergencyContact << (V, pink) Value Object >>{
+        - int contact
+    }
+
+    Patient "1" -up-> "1" MedicalRecordNum : is identified by
+    Patient "1" -up-> "1" Name : is associated with
+    Patient "1" -left-> "1" DateOfBirth : owns a
+    Patient "1" -right-> "1" Gender : is associated with
+    Patient "1" --> "1" ContactInfo : owns a
+    Patient "1" <-- "*" MedicalCondition_Record : presents
+    Patient "1" --> "1" EmergencyContact : presents
+    Patient "1" <-- "1..*" AppointmentHistory : presents
+
+    class MedicalCondition_Record <<Entity>>
+    class Condition << (V, pink) Value Object >>{
+         - String conditions
+    }
+    note bottom of Condition
+             can be the medical history, current medications,
+             recent visits and diagnoses, lab results,
+             immunizations and plan/recommendations
+    end note
+    class RecordDate << (V, pink) Value Object >> <<identifier>>{
+         - Date dateTime
+    }
+
+    MedicalCondition_Record "1" --> "1" Condition : presents
+    MedicalCondition_Record "1" --> "1" RecordDate : presents
+
+    class AppointmentHistory <<Entity>>
+    class PatientAppointment << (V, pink) Value Object >>{
+         - String appointment
+    }
+    note bottom of PatientAppointment
+        list of surgeries the patient has had in the past
+        and the scheduled or requested operations
+    end note
+
+    AppointmentHistory "1" --> "1" PatientAppointment : presents
+    AppointmentHistory "1" --> "1" RecordDate : presents
+}
+
+@enduml

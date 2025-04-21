@@ -1,0 +1,129 @@
+@startuml
+actor User
+
+box "Frontend" #LightBlue
+participant "WebSPA" as AngularAPI
+end box
+
+box "Backend" #LightGreen
+participant "Backend API" as API
+participant "XRoute" as Route
+participant "IXController" as IController
+participant "XController" as Controller
+participant "IXService" as IService
+participant "XService" as Service
+participant "XRepo" as Repo
+participant "XMap" as Map
+participant "XDataSchema" as Schema
+participant "ValueObject" as ValueObject
+participant "X" as X
+end box
+
+User -> AngularAPI: Select "Edit"
+activate AngularAPI
+
+AngularAPI -> API: PATCH /api/X/{id}
+activate API
+
+API -> Route: PATCH /api/X/{id}
+activate Route
+
+Route -> IController: partialUpdateX(req, res, next)
+activate IController
+
+IController -> Controller: partialUpdateX(id, updateData)
+deactivate IController
+activate Controller
+
+Controller -> IService: updateX(id, updateData)
+activate IService
+
+IService -> Service: updateX(id, updateData)
+deactivate IService
+activate Service
+
+Service -> Repo: findById(id)
+activate Repo
+
+Repo -> Map: toDomain(document)
+activate Map
+
+Map --> Repo: X
+deactivate Map
+Repo --> Service: X | null
+deactivate Repo
+
+alt X not found
+    Service --> Controller: Result.fail("X not found")
+    Controller --> Route: 400 Bad Request\n"X not found"
+    Route --> API: 400 Bad Request\n"X not found"
+    API --> AngularAPI: 400 Bad Request\n"X not found"
+    AngularAPI --> User: Show error message "X not found"
+
+end
+
+Service -> Map: partialUpdateToDomain(existingModel, updateData)
+activate Map
+
+Map -> ValueObject: create(updateData.field)
+activate ValueObject
+alt Field is invalid
+    ValueObject --> Map: Result.fail(errorMessage)
+    Map --> Service: Result.fail(validationError)
+    Service --> Controller: Result.fail(validationError)
+    Controller --> Route: 400 Bad Request\n(validationError)
+    Route --> API: 400 Bad Request\n(validationError)
+    API --> AngularAPI: 400 Bad Request\n(validationError)
+    AngularAPI --> User: Show validation error message
+end
+
+ValueObject --> Map: Result.ok(Field)
+deactivate ValueObject
+
+Map -> X: create(X)
+activate X
+
+X --> Map: X domain
+deactivate X
+
+Map --> Service: Result<X>
+deactivate Map
+
+Service -> Repo: update(updatedX)
+activate Repo
+
+Repo -> Schema: validateAndUpdate({id}, {$set: fields})
+activate Schema
+
+Schema --> Repo: updatedDocument
+deactivate Schema
+
+Repo -> Map: toDomain(updatedDocument)
+activate Map
+
+Map --> Repo: X
+deactivate Map
+Repo --> Service: Result<X>
+deactivate Repo
+
+Service -> Map: toDTO(updatedX)
+activate Map
+
+Map --> Service: XDTO
+deactivate Map
+Service --> Controller: Result.ok(XDTO)
+deactivate Service
+
+Controller --> Route: 200 OK\n(xDTO)
+deactivate Controller
+
+Route --> API: 200 OK\n(xDTO)
+deactivate Route
+
+API --> AngularAPI: 200 OK\n(xDTO)
+deactivate API
+
+AngularAPI --> User: Show X updated details \nand "X updated successfully" message
+deactivate AngularAPI
+
+@enduml

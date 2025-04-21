@@ -1,0 +1,31 @@
+<div class="update-container" [class.modal]="isModal">
+    <div class="modal-header" *ngIf="isModal">
+      <button class="close-button" (click)="closeModal()">&#x2715;</button>
+    </div>
+  
+    <h2>Update Staff Profile</h2>
+  
+    <!-- Sucess or error message -->
+    <div *ngIf="message" class="message"
+      [class.success]="updatedMedicalCondition"
+      [class.error]="!updatedMedicalCondition">
+      <span [innerHTML]="message"></span>
+    </div>
+  
+    <app-generic-form
+      *ngIf="!updatedMedicalCondition"
+      [fields]="fields"
+      [formData]="medicalCondition"
+      [isUpdate]="isUpdate"
+      (formSubmit)="onSubmit()"
+    ></app-generic-form>
+  
+    <!-- Medical Condition updated details -->
+    <div *ngIf="updatedMedicalCondition" class="updated-details">
+      <h3>Medical Condition Details:</h3>
+      <p><strong>Code:</strong> {{ updatedMedicalCondition.code }}</p>
+      <p><strong>Designation:</strong> {{ updatedMedicalCondition.designation }}</p>
+      <p><strong>Description:</strong> {{ updatedMedicalCondition.description }}</p>
+      <p><strong>Common Symptoms:</strong> {{ updatedMedicalCondition.commonSymptoms.join(', ') }}</p>
+    </div>
+  </div>

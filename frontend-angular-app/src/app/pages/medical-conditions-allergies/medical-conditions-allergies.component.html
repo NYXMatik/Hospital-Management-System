@@ -1,0 +1,20 @@
+<div class="container">
+  <!-- Menu Section -->
+  <div class="menu-section">
+    <p>Manage</p>
+    <button (click)="selectedSection = 'allergies'">Allergies</button>
+    <button (click)="selectedSection = 'medical-conditions'">Medical Conditions</button>
+  </div>
+
+  <!-- Dynamic Section Rendering -->
+  <div class="manage-section">
+    <div *ngIf="selectedSection === 'allergies'" class="manage-allergies-section">
+      <router-outlet name="manage-allergies"></router-outlet>
+    </div>
+    <div *ngIf="selectedSection === 'medical-conditions'" class="manage-medical-conditions-section">
+      <router-outlet name="manage-medical-conditions"></router-outlet>
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>

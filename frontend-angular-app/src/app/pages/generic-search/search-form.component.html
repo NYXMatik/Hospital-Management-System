@@ -1,0 +1,12 @@
+<div class="search-form">
+  <div *ngFor="let field of fields">
+    <label [for]="field.name">{{ field.label }}:</label>
+    <input
+      type="text"
+      [id]="field.name"
+      [(ngModel)]="field.value"
+      [placeholder]="field.placeholder"
+    />
+  </div>
+  <button (click)="onSearch()">Search</button>
+</div>

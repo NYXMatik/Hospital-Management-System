@@ -1,0 +1,20 @@
+@startuml
+
+rectangle "User Aggregate" #cabfdd{
+class User <<AggregateRoot>> <<Entity>>
+    class Username << (V, pink) Value Object >> <<identifier>>{
+            - String username
+        }
+        class Role << (V, pink) Value Object >>{
+            - Enum role
+        }
+        class Email << (V, pink) Value Object >>{
+            - String email
+        }
+
+        User "1" --> "1" Username : is identified by
+        User "1" --> "1" Role : is associated with a
+        User "1" --> "1" Email : owns an
+}
+
+@enduml

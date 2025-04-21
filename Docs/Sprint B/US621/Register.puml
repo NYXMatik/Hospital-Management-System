@@ -1,0 +1,18 @@
+@startuml RegisterPatient
+
+actor Patient
+entity "RegisterPatientComponent" as RegisterPatient
+entity "Backend API" as BackendAPI
+entity "Patient Account Service" as PatientService
+entity "Patient Validation" as PatientValidation
+
+Patient -> RegisterPatient : Submits registration form
+RegisterPatient -> PatientValidation : Validates patient data
+PatientValidation --> RegisterPatient : Validation result
+RegisterPatient -> BackendAPI : Sends registration request
+BackendAPI -> PatientService : Calls register patient service
+PatientService -> BackendAPI : Registration response
+BackendAPI --> RegisterPatient : Sends success/error responseX
+RegisterPatient -> Patient : Displays registration result
+
+@enduml

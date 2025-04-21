@@ -1,0 +1,43 @@
+<div class="register-patient-form">
+  <h2>Register Patient</h2>
+  <form (ngSubmit)="onSubmit()" #patientForm="ngForm">
+    <!-- Full Name -->
+    <label for="fullName">Full Name:</label>
+    <input type="text" id="fullName" [(ngModel)]="patient.fullName" name="fullName" required />
+
+    <!-- Email -->
+    <label for="email">Email:</label>
+    <input type="email" id="email" [(ngModel)]="patient.email" name="email" required />
+
+    <!-- Phone -->
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" [(ngModel)]="patient.phone" name="phone" required />
+
+    <!-- Birth Date -->
+    <label for="birthDate">Birth Date:</label>
+    <input type="date" id="birthDate" [(ngModel)]="patient.birthDate" name="birthDate" required />
+
+    <!-- Address -->
+    <fieldset>
+      <legend>Address</legend>
+
+      <label for="street">Street:</label>
+      <input type="text" id="street" [(ngModel)]="patient.address.street" name="street" required />
+
+      <label for="city">City:</label>
+      <input type="text" id="city" [(ngModel)]="patient.address.city" name="city" required />
+
+      <label for="state">State:</label>
+      <input type="text" id="state" [(ngModel)]="patient.address.state" name="state" required />
+
+      <label for="postalCode">Postal Code:</label>
+      <input type="text" id="postalCode" [(ngModel)]="patient.address.postalCode" name="postalCode" required />
+
+      <label for="country">Country:</label>
+      <input type="text" id="country" [(ngModel)]="patient.address.country" name="country" required />
+    </fieldset>
+
+    <!-- Submit Button -->
+    <button type="submit">Register</button>
+  </form>
+</div>

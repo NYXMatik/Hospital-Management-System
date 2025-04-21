@@ -1,0 +1,36 @@
++------------------------------------------------------------+
+|                    Frontend (Angular)                     |
+|  +------------------------------------------------------   |
+|  |  UpdateAccountComponent (Angular)                       |
+|  |  - HTML Template: Forms for user input                  |
+|  |  - Validation: (Email, Phone, Address)                  |
+|  |  - HttpClient PUT request to backend API                |
+|  |  - Success/Error message handling                       |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+
+
+                    | (HTTP Request)
+
++------------------------------------------------------------+
+|                    Backend API Implementation             |
+|  +------------------------------------------------------   |
+|  |  Express.js or ASP.NET Core                             |
+|  |  - Endpoint: PUT /PatientAccount/{userId}               |
+|  |  - Validation logic (using middleware)                  |
+|  |  - Business logic: Update account data in the database |
+|  |  - Send success/error responses as JSON                 |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+
+
+                    | (Database Operations)
+
++------------------------------------------------------------+
+|                    Database Interaction                   |
+|  +------------------------------------------------------   |
+|  |  Database: MySQL/PostgreSQL or MongoDB                  |
+|  |  - PatientAccount Table/Collection                      |
+|  |  - Columns/Fields: profileId, fullName, email, phone    |
+|  |  - Update query via ORM or direct SQL query             |
+|  |  - Commit the transaction and return success response   |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+

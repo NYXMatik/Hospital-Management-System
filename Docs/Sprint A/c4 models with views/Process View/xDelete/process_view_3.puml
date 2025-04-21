@@ -1,0 +1,76 @@
+@startuml sd
+
+participant Route as route
+participant XController as ctrl
+participant XService as svc
+participant IXRepo as irepo
+participant xDTO as dto
+participant XRepo as repo
+participant XMapper as mapper
+participant X as staff
+participant XDataModel as schema
+participant XContext as context
+
+activate route
+route -> ctrl : SoftDelete(id)
+activate ctrl
+ctrl -> svc : InactivateAsync(id, _errorMessages)
+activate svc
+svc -> irepo : GetXByIdAsync(id)
+activate irepo
+irepo -> repo : implemnts GetXByIdAsync
+activate repo
+repo -> context : Set<XDataModel>()\n.FirstAsync(p => p.id==id)
+activate context
+context --> repo : return xDataModel with Id
+deactivate context
+alt xDataModel is Active
+    repo -> mapper : ToDomain(xDataModel)
+    activate mapper
+    note right of mapper: See "ToDomainMapper.puml"
+    mapper --> repo : return x
+    deactivate mapper
+    repo --> irepo : return x
+else xDataModel is Inactive
+    repo --> irepo : return null
+end
+deactivate repo
+irepo --> svc : return x with id
+deactivate irepo
+svc -> staff: MarkAsInactive()
+activate staff
+deactivate staff
+svc -> repo: InactivateAsync(x)
+activate repo
+repo -> context: Set<StaffDataModel>().FirstAsync(s => s.Id == staff.Id)
+activate context
+context --> repo : return xDataModel
+deactivate context
+repo -> mapper: DeactivatedDataModel(xDataModel, x)
+activate mapper
+deactivate mapper
+repo -> context : save xDataModel
+activate context
+deactivate context
+repo -> context : SaveChangesAsync()
+activate context
+deactivate context
+
+
+repo --> irepo: return success or insucess
+deactivate irepo
+deactivate repo
+irepo --> svc : return success or insucess
+deactivate irepo
+svc -> ctrl: message "X deactivated successfully." or x not found
+deactivate svc
+ctrl --> route
+alt caso de sucesso
+    ctrl --> route : Envia um código 200 (DELETE)
+else caso de insucesso
+    ctrl --> route : Envia um código 404 (NOT FOUND)
+end
+deactivate ctrl
+deactivate route
+
+@enduml

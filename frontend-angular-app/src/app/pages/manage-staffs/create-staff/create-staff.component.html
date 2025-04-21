@@ -1,0 +1,42 @@
+<div class="form-container">
+
+  <!-- Button to expand/hide the search section -->
+  <button (click)="toggleExpansion()">
+    {{ isExpanded ? '▲ ' : '▼ ' }}
+  </button>
+
+  <h2>Create Staff Profile</h2>
+
+  <!-- Visible form when isExpanded is true -->
+  <div *ngIf="isExpanded">
+
+    <!-- Sucess or error message -->
+    <div *ngIf="message" class="message"
+      [class.success]="createdStaff"
+      [class.error]="!createdStaff">
+      <span [innerHTML]="message"></span>
+    </div>
+    <!-- Form with data to create staff -->
+    <app-generic-form
+      *ngIf="!createdStaff"
+      [fields]="fields"
+      [formData]="staff"
+      [isUpdate]="isUpdate"
+      (formSubmit)="onSubmit()"
+    ></app-generic-form>
+
+
+    <!-- Staff created details -->
+    <div *ngIf="createdStaff" class="created-details">
+      <h3>Staff Details:</h3>
+      <p><strong>Full Name:</strong> {{ createdStaff.fullName }}</p>
+      <p><strong>License Number:</strong> {{ createdStaff.licenseNumber }}</p>
+      <p><strong>Email:</strong> {{ createdStaff.email }}</p>
+      <p><strong>Phone Number:</strong> {{ createdStaff.phoneNumber }}</p>
+      <p><strong>Specialization:</strong> {{ createdStaff.specialization }}</p>
+
+      <!-- Close button to return to the form -->
+      <button (click)="createNewStaff()">Create New Staff</button>
+    </div>
+  </div>
+</div>

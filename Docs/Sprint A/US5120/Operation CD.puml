@@ -1,0 +1,88 @@
+@startuml Operation
+
+class Operation{
+	String name;
+	SortedSet<Version> phases
+
+	+Operation(String name)
+	+currentVersion()
+	+pendingVersion()
+
+}
+
+
+class Version{
+	int id;
+	Date startDate;
+	boolean status;
+	SortedSet<Phase> phases;
+
+	+Version(int id, Date startDate)
+
+	+addPhase(Phase phase)
+}
+
+
+class Phase{
+	String name;
+	String description;
+	Duration duration;
+	List<RequiredStaff> staffList;
+
+	+Phase(String name, Duration duration)
+	+String getName()
+	+String getDescription()
+	+Duration getDuration()
+
+	+void addStaff(RequiredStaff staff)
+	+void removeStaff(RequiredStaff staff)
+}
+
+class RequiredStaff{
+	Specialization specialization;
+	StaffType staffType;
+	int quantity;
+}
+
+RequiredStaff -- Specialization
+RequiredStaff -- StaffType
+RequiredStaff --* Phase
+
+Version o-- Phase
+Version -o Operation
+
+class OperationRepository{
+
+	List<Operation> operations;
+
+	+Operation getOperation(String name)
+	+void saveOperation(Operation operation)
+	+void deleteOperation(Operation operation)
+	+void editOperation(Operation operation)
+	+List<Operation> getAllOperations()
+
+}
+
+class OperationController{
+	
+	OperationRepository operationRepository;
+
+	+OperationController(OperationRepository operationRepository)
+	+void addOperation(Operation operation)
+	+void removeOperation(Operation operation)
+	+void editOperation(Operation operation)
+	+List<Operation> getAllOperations()
+	+Operation getOperation(String name)
+	+List<Operation> getOperationsBySpecialist(Staff specialist)
+	+List<Operation> getOperationsByDuration(Duration duration)
+}
+
+
+
+OperationRepository -- Operation
+OperationController -- OperationRepository
+
+
+
+
+@enduml

@@ -1,0 +1,52 @@
+@startuml
+actor User
+
+box "Frontend/UI" #LightBlue
+participant "SPA" as Frontend
+end box
+
+box "Backend/API" #LightGreen
+participant "WebApi" as Backend
+end box
+
+box "Database" #LightYellow
+participant "Database" as DB
+end box
+
+User -> Frontend: Access Search X
+activate Frontend
+Frontend -> Backend: GET /api/X
+activate Backend
+Backend -> DB: Get all X
+activate DB
+alt Success
+    DB --> Backend: Success
+    Backend --> Frontend: Return list
+    Frontend --> User: Presents list with all X
+
+    User -> Frontend: Input search filters (t, y, z) \n and click "Search"
+    activate Frontend
+    Frontend -> Backend: GET /api/X/filter?t={t}&y={y}&z={z}
+    activate Backend
+    Backend -> DB: Get X filtered
+    DB --> Backend: Response (filtered list or error message)
+    Backend --> Frontend: Response (filtered list or error message)
+    deactivate Backend
+    alt Success
+        Frontend --> User: Presents filtered X list
+    else Error
+        Frontend --> User: Presents message "No X found"
+        deactivate Frontend
+    end
+
+else Failure
+    DB --> Backend: Error
+    deactivate DB
+    Backend --> Frontend: Return error details
+    deactivate Backend
+    Frontend --> User: Display error message
+    deactivate Frontend
+end
+
+@enduml
+

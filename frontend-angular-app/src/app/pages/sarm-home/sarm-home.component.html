@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="sarm-home.component.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{ title }}</h1>
+      <p class="intro-text">I want to log in as...</p>
+      <div class="button-container">
+        <button (click)="navigateToAdmin()">Admin</button>
+        <button (click)="navigateToPatient()">Patient</button>
+        <button (click)="navigateToDoctor()">Doctor</button>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </body>
+</html>
+

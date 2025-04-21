@@ -1,0 +1,63 @@
+<div class="book-appointment-container">
+  <h1>Book Appointment</h1>
+
+  <!-- Mostrar mensajes de error -->
+  <div *ngIf="errorMessages.length > 0" class="error-messages">
+    <ul>
+      <li *ngFor="let error of errorMessages">{{ error }}</li>
+    </ul>
+  </div>
+
+  <!-- Mostrar mensaje de éxito -->
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
+  <form (ngSubmit)="bookAppointment()">
+    <div class="form-group">
+      <label for="doctor">Doctor</label>
+      <select
+        id="doctor"
+        [(ngModel)]="appointmentData.doctor"
+        name="doctor"
+        class="form-control"
+        required
+      >
+        <option value="" disabled selected>Select a doctor</option>
+        <option *ngFor="let doctor of doctors" [value]="doctor.fullName">
+          {{ doctor.fullName }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        [(ngModel)]="appointmentData.description"
+        name="description"
+        class="form-control"
+        required
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="appointmentDate">Appointment Date</label>
+      <input
+        type="datetime-local"
+        id="appointmentDate"
+        [(ngModel)]="appointmentData.appointmentDate"
+        name="appointmentDate"
+        class="form-control"
+        required
+      />
+    </div>
+
+    <div class="form-buttons">
+      <button type="submit" class="btn btn-primary">Book Appointment</button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,14 @@
+@startuml
+actor User
+participant "System" as System
+
+User -> System: Select button "Edit"
+System -> User: Show filled form to edit X
+
+User -> System: Submit edited X
+alt Success
+    System -> User: Display success message
+else Failure
+    System -> User: Display error message
+end
+@enduml

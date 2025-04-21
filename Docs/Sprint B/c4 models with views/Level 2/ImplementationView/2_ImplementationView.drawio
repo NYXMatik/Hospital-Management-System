@@ -1,0 +1,25 @@
+<mxfile host="65bd71144e">
+    <diagram id="2KhIsbDiPvBkP_OM17Oy" name="Page-1">
+        <mxGraphModel dx="1492" dy="838" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#FFFFFF" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="47" value="&lt;br&gt;&lt;br&gt;SARM&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;" style="shape=folder;fontStyle=1;tabWidth=80;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;strokeColor=#000000;fillColor=#faf5e3;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="190" y="60" width="360" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" value="Backend" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;fillColor=#F2DBC0;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="170" width="130" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="50" style="edgeStyle=none;html=1;exitX=0;exitY=0;exitDx=0;exitDy=47;exitPerimeter=0;entryX=0;entryY=0;entryDx=130;entryDy=47;entryPerimeter=0;fontColor=#000000;strokeColor=#000000;dashed=1;endArrow=open;endFill=0;" edge="1" parent="1" source="49" target="48">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" value="Frontend" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;fillColor=#F2DBC0;fontColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="390" y="170" width="130" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="51" value="" style="whiteSpace=wrap;html=1;labelBackgroundColor=none;labelBorderColor=default;strokeColor=none;fontColor=#000000;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="130" y="30" width="480" height="290" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

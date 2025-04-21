@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.create-section, .search-section {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.welcome-container {
+  text-align: center;
+}
+
+.welcome-container h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.welcome-container p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.welcome-container {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.welcome-container h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.welcome-container p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}

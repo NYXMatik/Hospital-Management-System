@@ -1,0 +1,55 @@
+<!-- view-port.component.html -->
+<div class="controls">
+	<div class="building-info" *ngIf="currentLayout">
+	  <h3>{{currentLayout.BuildingName || 'Building'}} - Floor {{currentLayout.BuildingFloor || '1'}}</h3>
+	</div>
+	<input 
+	  type="file" 
+	  accept=".json"
+	  (change)="onFileSelected($event)"
+	  #fileInput>
+	<button 
+	  (click)="renderLayout()" 
+	  [disabled]="!currentLayout">
+	  Render Layout
+	</button>
+  </div>
+  
+  <div #rendererContainer></div>
+  
+  <app-information-panel
+	[visible]="showInfoPanel"
+	[roomInfo]="roomInfo"
+	(close)="hideRoomInfo()">
+  </app-information-panel>
+  
+  <!-- Formulario para crear información de la habitación -->
+  <div *ngIf="showInfoPanel2">
+	<h3>Create Room Info</h3>
+	<form [formGroup]="roomInfoForm" (ngSubmit)="createRoomInfo()">
+	  <label for="roomId">Room ID:</label>
+	  <select id="roomId" formControlName="RoomId" required>
+		<option *ngFor="let bedId of BedIDList" [value]="bedId">{{bedId}}</option>
+	  </select>
+  
+	  <label for="specialization">Specialization:</label>
+	  <input id="specialization" formControlName="specialization" required>
+  
+	  <label for="startTime">Start Time:</label>
+	  <input id="startTime" formControlName="startTime" required>
+  
+	  <label for="endTime">End Time:</label>
+	  <input id="endTime" formControlName="endTime" required>
+  
+	  <label for="activity">Activity:</label>
+	  <input id="activity" formControlName="activity" required>
+  
+	  <button type="button" (click)="addTimeSlot()">Add Time Slot</button>
+  
+	  <div *ngFor="let slot of newRoomInfo.schedule">
+		<p>{{slot.startTime}} - {{slot.endTime}}: {{slot.activity}}</p>
+	  </div>
+  
+	  <button type="submit">Save Room Info</button>
+	</form>
+  </div>

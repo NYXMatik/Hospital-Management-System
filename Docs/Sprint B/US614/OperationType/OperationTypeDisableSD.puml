@@ -1,0 +1,20 @@
+@startuml System Sequence Diagram
+skinparam sequenceMessageAlign center
+
+actor User
+participant "Operation Management System" as System
+
+User -> System: Access Disable Operation Page
+System --> User: Display Search Form
+
+User -> System: Enter Operation Name
+System --> User: Display Operation Details
+
+User -> System: Confirm Disable Operation
+System --> User: Create New Version (Disabled)
+System --> User: Show Success Message
+
+User -> System: Click Return
+System --> User: Navigate to Operations List
+
+@enduml

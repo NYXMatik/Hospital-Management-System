@@ -1,0 +1,16 @@
+@startuml ContextDiagram
+
+actor Patient
+actor SystemUser
+
+rectangle "SARM" {
+	component "Frontend" as FE
+	component "Backend" as BE
+
+	FE -(0- BE : API
+}
+
+Patient -- FE
+SystemUser -- BE
+
+@enduml

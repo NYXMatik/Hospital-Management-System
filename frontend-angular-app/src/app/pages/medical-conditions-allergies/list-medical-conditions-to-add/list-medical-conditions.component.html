@@ -1,0 +1,51 @@
+<div class="form-container">
+  
+  <h2>Add all desired medical conditions</h2>
+
+  <!-- Mensagens -->
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+  <div *ngIf="success" class="success-message">
+    <p>{{ success }}</p>
+  </div>
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading...</p>
+  </div>
+  
+  <div class="search-page">
+    <!-- Lado esquerdo -->
+    <div class="search-forms">
+
+      <app-search-form
+        [fields]="searchFields"
+        (search)="handleSearch($event)"
+      ></app-search-form>
+
+
+      <!-- Medical Condition updated details -->
+      <div *ngIf="selectedMedicalCondition" class="modal-container">
+        <button class="close-button" (click)="closeModal()">&#x2715;</button>
+        <h3>Medical Condition Details:</h3>
+        <p><strong>Code:</strong> {{ selectedMedicalCondition.code }}</p>
+        <p><strong>Designation:</strong> {{ selectedMedicalCondition.designation }}</p>
+        <p><strong>Description:</strong> {{ selectedMedicalCondition.description }}</p>
+        <p><strong>Common Symptoms:</strong> {{ selectedMedicalCondition.commonSymptoms.join(', ') }}</p>
+      </div>
+    </div>
+
+    <!-- Lado direito -->
+    <div class="list-container">
+      <app-result-list
+        [items]="medicalConditionsList"
+        [actions]="actionButtons"
+        (actionClick)="handleAction($event)"
+      ></app-result-list>
+    </div>
+  </div>
+
+  
+
+</div>
+
+

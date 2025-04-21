@@ -1,0 +1,45 @@
+@startuml SD_UpdateOperationType
+actor User
+participant "SearchOperationComponent" as Search
+participant "UpdateOperationComponent" as Update
+participant "GenericFormComponent" as Form
+participant "OperationTypeService" as Service
+participant "Backend API" as API
+
+User -> Search: clickEditOperation(operation)
+activate Search
+Search -> Update: openEditModal(operation)
+activate Update
+
+Update -> Update: initializeNewVersion()
+Update -> Update: ensureThreePhases()
+Update -> Form: displayForm(versionFields)
+activate Form
+
+User -> Form: enterVersionDetails()
+User -> Form: updatePhaseDetails()
+
+loop for each phase
+    User -> Form: updateStaffDetails()
+end
+
+User -> Update: clickSave()
+Update -> Update: validatePhases()
+Update -> Update: ensureThreePhases()
+
+alt valid operation
+    Update -> Service: updateOperation(name, newVersion)
+    activate Service
+    Service -> API: POST /api/operations/{name}
+    API --> Service: response
+    Service --> Update: success
+    Update --> Search: showSuccessMessage()
+else invalid operation
+    Update --> Search: showErrorMessage()
+end
+
+deactivate Service
+deactivate Form
+deactivate Update
+deactivate Search
+@enduml

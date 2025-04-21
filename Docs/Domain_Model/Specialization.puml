@@ -1,0 +1,24 @@
+@startuml
+
+rectangle "Specialization Aggregate" #bbffdd{
+    class Specialization <<Entity>>
+    class SpecializationID << (V, pink) Value Object >> <<identifier>>{
+           - String id
+    }
+    class SpecializationName << (V, pink) Value Object >>{
+           - String name
+    }
+    class SpecializationDescription << (V, pink) Value Object >>{
+           - String description
+    }
+    note top of Specialization
+        a predefined list of specializations will be provided
+        the system should allow for future additions
+    end note
+
+    Specialization "1" --> "1" SpecializationID : is identified by
+    Specialization "1" --> "1" SpecializationName : is associated with
+    Specialization "1" --> "1" SpecializationDescription : is described by
+}
+
+@enduml

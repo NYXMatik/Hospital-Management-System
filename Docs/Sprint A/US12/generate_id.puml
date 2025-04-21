@@ -1,0 +1,13 @@
+@startuml sd
+
+participant XService as svc
+participant IStaffIdGenerator as generator
+
+svc -> generator: GenerateXId(staffDTO.RecruitmentYear, staffDTO.Category)
+activate generator
+
+
+generator --> svc: staffId
+deactivate generator
+
+@enduml

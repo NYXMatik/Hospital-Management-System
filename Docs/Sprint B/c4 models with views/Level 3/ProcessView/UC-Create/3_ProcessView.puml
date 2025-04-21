@@ -1,0 +1,53 @@
+@startuml
+actor User
+
+box "Frontend" #LightBlue
+participant "CreateXComponent" as CSC
+participant "GenericFormComponent" as GFC
+participant "XService" as SS
+end box
+
+box "Backend" #LightGreen
+participant "Backend API" as API
+end box
+
+User -> CSC: Click "Expand Form"
+activate CSC
+CSC -> GFC: Render Form
+activate GFC
+GFC --> CSC: Form
+deactivate GFC
+CSC --> User: Presents form
+deactivate CSC
+
+User -> CSC: Fill Form and Click "Save"
+activate CSC
+CSC -> GFC: Filled form
+activate GFC
+GFC --> CSC: Emit formSubmit with formData
+deactivate GFC
+
+CSC -> SS: createX(formData)
+activate SS
+SS -> API: POST /api/X
+activate API
+
+alt Success
+    API --> SS: Return Created X
+    deactivate API
+    SS --> CSC: Created X
+
+    CSC --> User: Show Success Message
+else Failure
+
+    SS --> CSC: Error Details
+    deactivate SS
+    CSC --> User: Show Error Message
+end
+
+User -> CSC: Click "Create New X"
+CSC -> GFC: Reset Form
+note right of CSC: Process repeats
+
+@enduml
+

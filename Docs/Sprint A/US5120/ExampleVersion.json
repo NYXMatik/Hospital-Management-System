@@ -1,0 +1,47 @@
+{
+  "versionNumber": 3,
+  "date": "2024-10-01",
+  "status": true,
+  "pending": false,
+  "phases": [
+    {
+      "name": "Preparation",
+      "description": "Initial setup and preparation for surgery.",
+      "duration": "00:30:00",
+      "phaseStep": 1,
+      "staffList": [
+        {
+          "specialty": "Cardiology",
+          "role": "Doctor",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "name": "Operation",
+      "description": "Main surgical procedure.",
+      "duration": "02:00:00",
+      "phaseStep": 2,
+      "staffList": [
+        {
+          "specialty": "Cardiology",
+          "role": "Doctor",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "name": "Recovery",
+      "description": "Post-surgery patient stabilization.",
+      "duration": "01:00:00",
+      "phaseStep": 3,
+      "staffList": [
+        {
+          "specialty": "Cardiology",
+          "role": "Doctor",
+          "quantity": 2
+        }
+      ]
+    }
+  ]
+}

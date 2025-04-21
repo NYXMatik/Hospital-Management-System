@@ -1,0 +1,73 @@
+
+@startuml OperationTypeGetOperationByName
+
+participant "Client" as client
+participant "OperationTypeController" as controller
+participant "OperationTypeService" as service
+participant "OperationTypeRepository" as repo
+participant "OperationTypeMapper" as mapper
+participant "Database" as db
+
+client -> controller : GET /api/OperationType/{name}
+activate controller
+
+controller -> service : GetByName(name)
+activate service
+
+service -> repo : GetOperationByNameAsync(name)
+activate repo
+
+repo -> db : Set<OperationTypeDataModel>()\n.Include(Versions)\n.ThenInclude(Phases)\n.ThenInclude(StaffList)\n.FirstOrDefaultAsync(name)
+activate db
+db --> repo : operationDataModel
+deactivate db
+
+alt operationDataModel is null
+    repo --> service : null
+    service --> controller : null
+    controller --> client : 404 NotFound
+else operationDataModel exists
+    repo -> mapper : ToDomain(operationDataModel)
+    activate mapper
+    
+    mapper --> repo : operation
+    deactivate mapper
+    
+    repo --> service : operation
+    deactivate repo
+    
+    service -> OperationTypeDTO : ToDTO(operation)
+    activate OperationTypeDTO
+    
+    loop for each version in operation.Versions
+        OperationTypeDTO -> VersionDTO : ToDTO(version)
+        activate VersionDTO
+        
+        loop for each phase in version.Phases
+            VersionDTO -> PhaseDTO : ToDTO(phase)
+            activate PhaseDTO
+            
+            loop for each staff in phase.StaffList
+                PhaseDTO -> RequiredStaffDTO : ToDTO(staff)
+            end
+            
+            PhaseDTO --> VersionDTO : phaseDTO
+            deactivate PhaseDTO
+        end
+        
+        VersionDTO --> OperationTypeDTO : versionDTO
+        deactivate VersionDTO
+    end
+    
+    OperationTypeDTO --> service : operationDTO
+    deactivate OperationTypeDTO
+    
+    service --> controller : operationDTO
+    deactivate service
+    
+    controller --> client : 200 OK + operationDTO
+end
+
+deactivate controller
+
+@enduml

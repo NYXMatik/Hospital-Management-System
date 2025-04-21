@@ -1,0 +1,15 @@
+@startuml OperationTypeCreateSSD
+actor Client
+participant "System" as System
+
+Client -> System : POST /api/OperationType\n(operationDTO)
+
+alt Invalid Request
+    System --> Client : 400 Bad Request
+else Operation Already Exists
+    System --> Client : 409 Conflict
+else Success
+    System --> Client : 201 Created + Operation
+end
+
+@enduml

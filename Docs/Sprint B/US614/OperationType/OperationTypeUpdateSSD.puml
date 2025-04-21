@@ -1,0 +1,18 @@
+@startuml SSD_UpdateOperationType
+actor User
+participant System
+
+User -> System: clickEditOperation()
+System --> User: showUpdateForm()
+User -> System: enterVersionDetails()
+User -> System: updatePhaseDetails()
+System --> User: validatePhaseCount(3)
+User -> System: updateStaffDetails()
+User -> System: saveVersion()
+System -> System: validateOperation()
+alt valid operation
+    System --> User: showSuccessMessage()
+else invalid operation
+    System --> User: showErrorMessage()
+end
+@enduml

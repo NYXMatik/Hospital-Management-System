@@ -1,0 +1,21 @@
+.manage-account-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .manage-account-btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .manage-account-btn:hover {
+    background-color: #218838;
+  }
+  

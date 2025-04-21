@@ -1,0 +1,10 @@
+@startuml
+actor Admin as actor
+participant SARM as sarm
+
+actor -> sarm: list x
+sarm --> actor: requests data
+actor -> sarm: inserts requested data
+sarm --> actor: message: list
+
+@enduml

@@ -1,0 +1,34 @@
+<div class="update-container" [class.modal]="isModal">
+  <div class="modal-header" *ngIf="isModal">
+    <button class="close-button" (click)="closeModal()">&#x2715;</button>
+  </div>
+
+  <h2>Update Allergy</h2>
+
+  <!-- Sucess or error message -->
+  <div *ngIf="message" class="message"
+      [class.success]="updatedAllergy"
+      [class.error]="!updatedAllergy">
+      <!--{{ message }}-->
+      <span [innerHTML]="message"></span>
+  </div>
+
+  <app-generic-form
+    *ngIf="!updatedAllergy"
+    [fields]="fields"
+    [formData]="allergy"
+    [isUpdate]="isUpdate"
+    (formSubmit)="onSubmit()"
+  ></app-generic-form>
+
+
+  <!-- Allergy updated details -->
+  <div *ngIf="updatedAllergy" class="updated-details">
+    <h3>Allergy Details:</h3>
+    <p><strong>Code:</strong> {{ updatedAllergy.code }}</p>
+    <p><strong>Designation:</strong> {{ updatedAllergy.designation }}</p>
+    <p><strong>Description:</strong> {{ updatedAllergy.description }}</p>
+  </div>
+
+
+</div>

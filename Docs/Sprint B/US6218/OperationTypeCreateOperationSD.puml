@@ -1,0 +1,77 @@
+@startuml OperationTypeCreate
+
+participant "Client" as client
+participant "OperationTypeController" as controller
+participant "OperationTypeService" as service
+participant "OperationTypeRepository" as repo
+participant "OperationTypeFactory" as factory
+participant "OperationTypeMapper" as mapper
+participant "Database" as db
+
+client -> controller : POST /api/OperationType\n(OperationTypeDTO)
+activate controller
+
+controller -> controller : Validate ModelState
+
+alt ModelState Invalid
+    controller --> client : BadRequest(ModelState)
+else ModelState Valid
+    controller -> service : Add(operationDTO, errorMessages)
+    activate service
+    
+    service -> OperationTypeDTO : ToDomain(operationDTO, name)
+    activate OperationTypeDTO
+    
+    OperationTypeDTO -> factory : NewOperation(name, versions)
+    activate factory
+    factory --> OperationTypeDTO : operation
+    deactivate factory
+    
+    OperationTypeDTO --> service : operation
+    deactivate OperationTypeDTO
+    
+    service -> repo : Add(operation)
+    activate repo
+    
+    repo -> mapper : ToDataModel(operation)
+    activate mapper
+    mapper --> repo : operationDataModel
+    deactivate mapper
+    
+    repo -> db : Add(operationDataModel)
+    activate db
+    db --> repo : operationDataModelEntityEntry
+    deactivate db
+    
+    repo -> db : SaveChangesAsync()
+    activate db
+    db --> repo : saved
+    deactivate db
+    
+    repo -> mapper : ToDomain(operationDataModelSaved)
+    activate mapper
+    mapper --> repo : operationSaved
+    deactivate mapper
+    
+    repo --> service : operationSaved
+    deactivate repo
+    
+    service -> repo : GetByName(name)
+    activate repo
+    repo --> service : operation
+    deactivate repo
+    
+    service -> OperationTypeDTO : ToDTO(operation)
+    activate OperationTypeDTO
+    OperationTypeDTO --> service : operationDTO
+    deactivate OperationTypeDTO
+    
+    service --> controller : operationDTO
+    deactivate service
+    
+    controller --> client : CreatedAtAction(operationDTO)
+end
+
+deactivate controller
+
+@enduml

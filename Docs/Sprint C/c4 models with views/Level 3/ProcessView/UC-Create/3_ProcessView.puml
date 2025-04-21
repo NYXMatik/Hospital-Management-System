@@ -1,0 +1,120 @@
+@startuml
+actor User
+
+box "Frontend" #LightBlue
+participant "WebSPA" as AngularAPI
+end box
+
+box "Backend" #LightGreen
+participant "Backend API" as API
+participant "XRoute" as Route
+participant "IXController" as IController
+participant "XController" as Controller
+participant "IXService" as IService
+participant "XService" as Service
+participant "ValueObject" as ValueObject
+participant "X" as X
+participant "IXRepo" as IRepo
+participant "XRepo" as Repo
+participant "XMap" as Map
+participant "XDataSchema" as Schema
+end box
+
+User -> AngularAPI: Click "Expand Form" Create X
+activate AngularAPI
+AngularAPI -> API: POST /api/X
+activate API
+
+API -> Route: POST /api/X
+activate Route
+Route -> IController: createX(req, res, next)
+activate IController
+IController -> Controller: createX(req, res, next)
+deactivate IController
+activate Controller
+Controller -> IService: createX(XDTO)
+activate IService
+IService -> Service: createX(XDTO)
+deactivate IService
+activate Service
+note right of Service: Process repeats for each value \nobject that is needed
+Service -> ValueObject: create(XDTO.y)
+activate ValueObject
+
+alt ValueObject creation fails
+    ValueObject --> Service: Result.fail(validationError)
+    Service --> Controller: Result.fail(validationError)
+    Controller --> Route: 400 Bad Request\n(validationError)
+    Route --> API: 400 Bad Request\n(validationError)
+    API --> AngularAPI: 400 Bad Request\n(validationError)
+    AngularAPI --> User: Show validation error message
+else ValueObject creation succeeds
+    ValueObject --> Service: Result.ok(ValueObject)
+    deactivate ValueObject
+
+    Service -> X: create({y: y.getValue()})
+    activate X
+    alt X creation fails
+        X --> Service: Result.fail(validationError)
+        Service --> Controller: Result.fail(validationError)
+        Controller --> Route: 400 Bad Request\n(validationError)
+        Route --> API: 400 Bad Request\n(validationError)
+        API --> AngularAPI: 400 Bad Request\n(validationError)
+        AngularAPI --> User: Show validation error message
+    else X creation succeeds
+        X --> Service: Result.ok(X)
+        deactivate X
+
+        Service -> IRepo: save(X)
+        activate IRepo
+        IRepo -> Repo: save(X)
+        deactivate IRepo
+        activate Repo
+        Repo -> Schema: findOne(identifier)
+        activate Schema
+
+        alt X already exists
+            Schema --> Repo: true
+            Repo --> Service: Result.fail("X already exists")
+            Service --> Controller: Result.fail("X already exists")
+            Controller --> Route: 400 Bad Request\n("X already exists")
+            Route --> API: 400 Bad Request\n("X already exists")
+            API --> AngularAPI: 400 Bad Request\n("X already exists")
+            AngularAPI --> User: Show error "X already exists"
+        else X does not exist
+            Schema --> Repo: false
+            Repo -> Map: toPersistence(X)
+            activate Map
+            Map --> Repo: X persisted
+            deactivate Map
+            Repo -> Schema: create(X)
+            Schema --> Repo: X created
+            deactivate Schema
+            Repo -> Map: toDomain(X)
+            activate Map
+            Map --> Repo: X domain
+            deactivate Map
+
+            Repo --> Service: Result.ok(X)
+            deactivate Repo
+
+            Service -> Map: toDTO(X)
+            activate Map
+            Map --> Service: XDTO
+            deactivate Map
+
+            Service --> Controller: Result.ok(XDTO)
+            deactivate Service
+            Controller --> Route: 201 Created\n(XDTO)
+            deactivate Controller
+            Route --> API: 201 Created\n(XDTO)
+            deactivate Route
+            API --> AngularAPI: 201 Created\n(XDTO)
+            deactivate API
+            AngularAPI --> User: Show success message \nand X details
+            deactivate AngularAPI
+        end
+    end
+end
+
+@enduml

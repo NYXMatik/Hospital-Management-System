@@ -1,0 +1,19 @@
+<!-- information-panel.component.html -->
+<div class="room-info-modal" *ngIf="visible">
+    <div class="modal-content">
+      <button class="close-btn" (click)="onClose()">×</button>
+      <div class="room-info" *ngIf="roomInfo">
+        <h2>Room Information</h2>
+        <p><strong>Room ID:</strong> {{roomInfo.RoomId}}</p>
+        <p><strong>Specialization:</strong> {{roomInfo.specialization}}</p>
+        
+        <h3>Schedule</h3>
+        <div class="schedule-list">
+          <div class="schedule-item" *ngFor="let slot of roomInfo.schedule">
+            <span>{{slot.startTime}} - {{slot.endTime}}</span>
+            <span>{{slot.activity}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

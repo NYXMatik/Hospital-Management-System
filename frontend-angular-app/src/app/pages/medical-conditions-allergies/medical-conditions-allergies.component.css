@@ -1,0 +1,76 @@
+/* Container styles */
+.container {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: row;
+  margin: 0px;
+
+}
+
+.menu-section {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0.0005px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  margin-right: 10px;
+  height: 50vh;
+}
+
+/* Menu buttons */
+.menu-section button {
+  background: none;
+  color: #333;
+  border: none;
+  text-align: left;
+  padding: 10px;
+  margin: 5px 0;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Menu p */
+.menu-section p {
+  background: none;
+  color: #181717;
+  border: none;
+  text-align: left;
+  padding: 10px;
+  margin: 5px 0;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menu-section button:hover {
+  background-color: #e6e6e6;
+  color: #007bff;
+}
+
+.menu-section button:focus {
+  outline: none;
+  background-color: #d6d6d6;
+}
+
+/* Dynamic section styles */
+.manage-section {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  padding: 20px;
+}
+
+.manage-allergies-section {
+  flex-grow: 1;
+}
+
+.manage-medical-conditions-section {
+  flex-grow: 1;
+}

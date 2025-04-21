@@ -1,0 +1,26 @@
+@startuml
+
+rectangle "Appointment Aggregate" #eefccc{
+class Appointment <<AggregateRoot>> <<Entity>>
+    class ID << (V, pink) Value Object >> <<identifier>>{
+        - String id
+    }
+    class AppointmentScheduling << (V, pink) Value Object >>{
+        - Date dateTime
+    }
+    note bottom of AppointmentScheduling
+         date and time of the operation
+         YYYY/MM/DD HH:MM
+    end note
+    class Status << (V, pink) Value Object >>{
+        - Enum appointmentStatus
+    }
+    note bottom of Status
+          schedule, completed, canceled
+    end note
+
+    Appointment "1" -up-> "1" ID : is identified by
+    Appointment "1" --> "1" AppointmentScheduling : owns a
+    Appointment "1" --> "1" Status : is characterized by a
+
+@enduml

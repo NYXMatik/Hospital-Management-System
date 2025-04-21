@@ -1,0 +1,50 @@
+@startuml
+
+component "ExternalService" as IAM
+
+top to bottom direction
+
+
+package "<<System>> SARM" {
+    component "Frontend" as FE
+    component "Backend" as BE
+
+	FE -(0- BE : API
+	BE -(0- IAM : IAM_API
+}
+
+package "<<System>> Frontend" {
+	component "FE_SPA (Single Page Aplication)" as SPA
+
+}
+
+package "<<System>> Backend" {
+
+	component "BE_Logic" as BL
+	component "Schedule Optimizer" as SO
+	component "BuisenessContinuity" as BC
+	BL -(0- SO : SO_API
+	BL -0)- BC : BC_API
+}
+
+package "<<Component>> BE_Logic"{
+	component "BE_SPA (Single Page Aplication)" as SP
+	component "FE_3DRender" as R3D
+	component "BE_BuisenessLogic" as LO
+	component "GDPR" as GP
+
+	SP -(0- LO : LO_API
+	LO -(0- GP : GP_API
+
+	SP -(0- R3D : R3D_API
+}
+
+package "<<Component>> BE_BuisenessLogic"{
+
+	component "BE_Logic" as BR
+	database "BE_LogicDB" as DB
+
+	BR -(0- DB : SQL
+
+}
+@enduml

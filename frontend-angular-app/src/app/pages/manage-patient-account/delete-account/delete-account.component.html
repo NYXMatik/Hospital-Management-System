@@ -1,0 +1,25 @@
+<div class="delete-account-container">
+  <h2>Delete Your Account</h2>
+  <p>
+    If you want to delete your account and all associated data, click the button below. This action is irreversible.
+  </p>
+
+  <button
+    class="btn-delete"
+    [disabled]="isDeleting"
+    (click)="onDeleteAccount()">
+    Delete Account
+  </button>
+
+  <div [hidden]="!isDeleting" class="loading-message">
+    Deleting your account, please wait...
+  </div>
+
+  <div [hidden]="!deletionError" class="error-message">
+    {{ deletionError }}
+  </div>
+
+  <div [hidden]="!deletionSuccess" class="success-message">
+    {{ deletionSuccess }}
+  </div>
+</div>

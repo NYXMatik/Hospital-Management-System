@@ -1,0 +1,62 @@
+@startuml
+actor User
+
+box "Frontend" #LightBlue
+participant "UpdateXComponent" as USC
+participant "GenericFormComponent" as GFC
+participant "Router" as Router
+participant "XService" as XS
+end box
+
+box "Backend" #LightGreen
+participant "WebApi" as API
+end box
+
+== Open Form ==
+User -> USC: Select "Edit"
+activate USC
+USC -> Router: getCurrentNavigation()
+activate Router
+Router --> USC: Navigation State
+deactivate Router
+USC -> GFC: Pass fields and X data
+activate GFC
+GFC --> USC: Filled form
+deactivate GFC
+USC --> User: Show filled form
+deactivate USC
+
+== Edit and Submit ==
+User -> USC: Edit form and submit
+activate USC
+USC -> XS: Call updateX(X)
+activate XS
+XS -> API: POST /api/X/{id}
+activate API
+alt Success
+    API --> XS: Updated X
+else Error
+    API --> XS: Error details
+end
+deactivate API
+XS --> USC: Response (Updated X or Error)
+deactivate XS
+
+== Display Result ==
+alt Success
+    USC --> User: Display success message
+    USC --> User: Display updated details
+    USC -> XS: Emit XUpdatedSource event
+else Error
+    USC --> User: Display error message
+end
+
+== Close Modal ==
+User -> USC: Close modal
+USC -> Router: Navigate back to search
+activate Router
+Router --> USC: Search page
+deactivate Router
+USC --> User: Return to search page
+deactivate USC
+@enduml

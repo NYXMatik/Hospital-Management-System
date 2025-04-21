@@ -1,0 +1,43 @@
+<div class="form-container">
+  
+  <!-- Botão para expandir/ocultar a seção de pesquisa -->
+  <button (click)="toggleExpansion()">
+    {{ isExpanded ? '▲' : '▼' }}
+  </button>
+
+  <h2>Create Patient Profile</h2>
+
+  <!-- Formulário visível apenas quando isExpanded for true -->
+  <div *ngIf="isExpanded">
+
+    <!-- Success or error message -->
+    <div *ngIf="message" class="message"
+      [class.success]="createdPatient"
+      [class.error]="!createdPatient">
+      <span [innerHTML]="message"></span>
+    </div>
+
+    <!-- Patient Form (only shown before saving) -->
+    <app-generic-form
+      *ngIf="!createdPatient"
+      [fields]="fields"
+      [formData]="patient"
+      [isUpdate]="isUpdate"
+      (formSubmit)="onSubmit()"
+    ></app-generic-form>
+
+    <!-- Patient Created Details (shown after save) -->
+    <div *ngIf="createdPatient" class="created-details">
+      <h3>Patient Details:</h3>
+      <p><strong>Full Name:</strong> {{ createdPatient.fullName }}</p>
+      <p><strong>Email:</strong> {{ createdPatient.email }}</p>
+      <p><strong>Phone Number:</strong> {{ createdPatient.phoneNumber }}</p>
+      <p><strong>Birth Date:</strong> {{ createdPatient.birth }}</p>
+      <p><strong>Gender:</strong> {{ createdPatient.gender }}</p>
+      <p><strong>Emergency Contact:</strong> {{ createdPatient.emergencyContact }}</p>
+
+      <!-- Close button to return to the form -->
+      <button (click)="createNewPatient()">Create New Patient</button>
+    </div>
+  </div>
+</div>

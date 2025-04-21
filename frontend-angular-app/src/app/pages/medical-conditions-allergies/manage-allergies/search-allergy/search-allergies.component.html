@@ -1,0 +1,49 @@
+<div class="form-container">
+  <button (click)="toggleExpansion()">
+    {{ isExpanded ? '▲ ' : '▼ ' }}
+  </button>
+
+  <h2>Search Allergies</h2>
+
+  <div *ngIf="isExpanded" class="form-content">
+    <div class="search-page">
+      <!-- Lado esquerdo -->
+      <div class="search-forms">
+        <!-- Mensagens -->
+        <div *ngIf="error" class="error-message">
+          <p>{{ error }}</p>
+        </div>
+        <div *ngIf="success" class="success-message">
+          <p>{{ success }}</p>
+        </div>
+        <div *ngIf="isLoading" class="loading">
+          <p>Loading...</p>
+        </div>
+
+        <app-search-form
+          [fields]="searchFields"
+          (search)="handleSearch($event)"
+        ></app-search-form>
+      </div>
+
+      <!-- Lado direito -->
+      <div class="list-container">
+        <app-result-list
+          [items]="allergyList"
+          [actions]="actionButtons"
+          (actionClick)="handleAction($event)"
+        ></app-result-list>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isModalActive" class="modal-overlay">
+    <div class="modal-container">
+      <app-update-allergy
+        [allergy]="selectedAllergy"
+        [isModal]="true"
+        (close)="closeEditModal()"
+      ></app-update-allergy>
+    </div>
+  </div>
+</div>

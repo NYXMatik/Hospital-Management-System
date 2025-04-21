@@ -1,0 +1,51 @@
+@startuml
+actor User
+
+box "Frontend/UI" #LightBlue
+participant "SPA" as Frontend
+end box
+
+box "Backend/API" #LightGreen
+participant "WebApi" as Backend
+participant "MedicalRecordManagement" as MRM
+end box
+
+User -> Frontend: Access Search X
+activate Frontend
+Frontend -> Backend: GET /api/X
+activate Backend
+Backend -> MRM: send GET request
+activate MRM
+MRM -> MRM: Get all X
+alt Success
+    MRM --> Backend: Success
+    Backend --> Frontend: Return list
+    Frontend --> User: Presents list with all X
+
+    User -> Frontend: Input search filters (t, y, z) \n and click "Search"
+    activate Frontend
+    Frontend -> Backend: GET /api/X/filter?t={t}&y={y}&z={z}
+    activate Backend
+    Backend -> MRM: Send Get X request
+    MRM -> MRM: Get X filtered
+    MRM --> Backend: Response (filtered list or error message)
+    Backend --> Frontend: Response (filtered list or error message)
+    deactivate Backend
+    alt Success
+        Frontend --> User: Presents filtered X list
+    else Error
+        Frontend --> User: Presents message "No X found"
+        deactivate Frontend
+    end
+
+else Failure
+    MRM --> Backend: Error
+    deactivate MRM
+    Backend --> Frontend: Return error details
+    deactivate Backend
+    Frontend --> User: Display error message
+    deactivate Frontend
+end
+
+@enduml
+

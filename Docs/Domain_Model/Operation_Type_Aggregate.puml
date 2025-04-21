@@ -1,0 +1,45 @@
+@startuml
+
+rectangle "Operation Type Aggregate" #cdffff{
+class OperationType <<AggregateRoot>> <<Entity>>
+    class TypeID << (V, pink) Value Object >> <<identifier>>{
+        - String id
+    }
+    class Name << (V, pink) Value Object >>{
+        --unique--
+        - String name
+    }
+    class RequiredStaffBySpecialization << (V, pink) Value Object >>{
+        - String specialization
+        - String staffType
+        - int amountMin
+        - int amountDesired
+    }
+    class SurgeryPhase << (V, pink) Value Object >>{
+        - String phaseName -unique-
+        - String description
+        - Time estimatedDuration
+    }
+    class Status << (V, pink) Value Object >>{
+         - Enum status
+    }
+    note top of Status
+         active or inactive
+    end note
+    class Version << (V, pink) Value Object >>{
+         - int id
+         - Date beginDate
+         - Date endDate
+    }
+
+    OperationType "1" -up-> "1" TypeID : is identified by
+    OperationType "1" -up-> "1" Name : is associated with
+    OperationType "1" -right-> "1" Status : is marked by the
+    OperationType "1" *-left- "1..*" Version : contains
+    Version "1" *-- "3..*" SurgeryPhase : owns
+    SurgeryPhase "1" *-right- "1..*" RequiredStaffBySpecialization : needs
+
+}
+
+@enduml
+

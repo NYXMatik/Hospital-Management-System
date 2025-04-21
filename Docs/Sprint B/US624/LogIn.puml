@@ -1,0 +1,52 @@
+@startuml LogIn
+title Login as Backoffice User
+
+actor BackofficeUser as BU
+participant "LoginPatientAccountComponent" as LPAC
+participant "HttpClient" as HC
+participant "PatientAccount API" as API
+participant "Router (Angular)" as Router
+
+BU -> LPAC: Click "Login with Google"
+LPAC -> LPAC: Load Google Sign-In Script
+alt Script Loaded Successfully
+    LPAC -> Google API: Initialize Google Sign-In
+    Google API --> BU: Render Google Sign-In Button
+else Script Loading Fails
+    LPAC -> BU: Show error "Google API script loading error"
+end
+
+BU -> Google API: Authenticate with Google
+Google API --> LPAC: Return idToken
+LPAC -> HC: POST /PatientAccount/login/google
+HC -> API: Validate idToken
+alt Validation Success
+    API --> HC: Return user profile and token
+    HC --> LPAC: Pass profile and token
+    LPAC -> LPAC: Save user profile and token to localStorage
+    LPAC -> Router: Navigate to /manage-account
+    Router --> BU: Redirect to Manage Account Page
+else Validation Fails
+    API --> HC: Return error
+    HC --> LPAC: Pass error
+    LPAC -> BU: Show login failed error
+end
+
+alt Simulated Login (optional)
+    BU -> LPAC: Enter email for simulated login
+    LPAC -> HC: GET /PatientAccount/email/{email}
+    HC -> API: Fetch user details by email
+    alt Email Found
+        API --> HC: Return user profile with appointments
+        HC --> LPAC: Pass profile
+        LPAC -> LPAC: Save simulated user profile to localStorage
+        LPAC -> Router: Navigate to /manage-account
+        Router --> BU: Redirect to Manage Account Page
+    else Email Not Found
+        API --> HC: Return error
+        HC --> LPAC: Pass error
+        LPAC -> BU: Show email not found error
+    end
+end
+
+@enduml

@@ -1,0 +1,54 @@
+
+@startuml OperationTypeGetOperations
+
+participant "Client" as client
+participant "OperationTypeController" as controller
+participant "OperationTypeService" as service
+participant "OperationTypeRepository" as repo
+participant "OperationTypeMapper" as mapper
+participant "Database" as db
+
+client -> controller : GET /api/OperationType
+activate controller
+
+controller -> service : GetAll()
+activate service
+
+service -> repo : GetOperationsAsync()
+activate repo
+
+repo -> db : Set<OperationTypeDataModel>()
+activate db
+db --> repo : operationsDataModel
+deactivate db
+
+alt operationsDataModel is null or empty
+    repo --> service : empty list
+else has data
+    repo -> mapper : ToDomain(operationsDataModel)
+    activate mapper
+    
+    mapper --> repo : operations
+    deactivate mapper
+
+    repo --> service : operations
+end
+deactivate repo
+
+service -> OperationTypeDTO : ToDTO(operations)
+activate OperationTypeDTO
+
+loop for each operation
+    OperationTypeDTO -> OperationTypeDTO : ToDTO(operation)
+end
+
+OperationTypeDTO --> service : operationsDTO
+deactivate OperationTypeDTO
+
+service --> controller : operationsDTO
+deactivate service
+
+controller --> client : 200 OK + operationsDTO
+deactivate controller
+
+@enduml

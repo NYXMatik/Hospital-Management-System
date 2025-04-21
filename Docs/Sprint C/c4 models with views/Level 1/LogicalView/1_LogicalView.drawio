@@ -1,0 +1,53 @@
+<mxfile host="65bd71144e">
+    <diagram id="2KhIsbDiPvBkP_OM17Oy" name="Page-1">
+        <mxGraphModel dx="530" dy="399" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#FFFFFF" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="54" value="" style="whiteSpace=wrap;html=1;fontColor=none;noLabel=1;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="130" y="80" width="380" height="210" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" style="edgeStyle=none;html=1;strokeColor=#000000;fontColor=#000000;endArrow=circle;endFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" edge="1" source="2">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="470" y="160" as="targetPoint"/>
+                        <mxPoint x="540" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="46" value="UI" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;labelBackgroundColor=none;" parent="45" vertex="1" connectable="0">
+                    <mxGeometry x="0.4139" y="-5" relative="1" as="geometry">
+                        <mxPoint y="10" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="48" style="edgeStyle=none;html=1;strokeColor=#000000;fontColor=#000000;endArrow=halfCircle;endFill=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" edge="1" source="2">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="180" y="160" as="targetPoint"/>
+                        <mxPoint x="170" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="49" value="IAM &lt;br&gt;API" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;labelBackgroundColor=none;" parent="48" vertex="1" connectable="0">
+                    <mxGeometry x="0.7733" y="5" relative="1" as="geometry">
+                        <mxPoint x="-26" y="-5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="51" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#000000;fontColor=#000000;endArrow=halfCircle;endFill=0;" parent="1" source="2" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="320" y="250" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="52" value="SMTP API" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#000000;labelBackgroundColor=none;" parent="51" vertex="1" connectable="0">
+                    <mxGeometry x="0.8658" y="7" relative="1" as="geometry">
+                        <mxPoint x="-7" y="12" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" value="«System»&lt;br&gt;&lt;b&gt;SARM&lt;br&gt;&lt;/b&gt;" style="html=1;dropTarget=0;fillColor=#fbf6e4;strokeColor=#000000;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="230" y="110" width="180" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="" style="shape=module;jettyWidth=8;jettyHeight=4;fillColor=#fbf6e4;strokeColor=#000000;" parent="2" vertex="1">
+                    <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+                        <mxPoint x="-27" y="7" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

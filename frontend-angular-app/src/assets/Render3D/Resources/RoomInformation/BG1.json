@@ -1,0 +1,11 @@
+{
+    "RoomId": "BG1",
+    "specialization": "Gastroenterology",
+    "schedule": [
+        {
+            "startTime": "10:00",
+            "endTime": "14:00",
+            "activity": "Endoscopy"
+        }
+    ]
+}

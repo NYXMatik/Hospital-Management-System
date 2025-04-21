@@ -1,0 +1,50 @@
+@startuml logInSSD
+title System Sequence Diagram - Backoffice User Login
+
+actor BackofficeUser as BU
+participant "LoginPatientAccountComponent" as LPAC
+participant "HttpClient" as HC
+participant "PatientAccount API" as API
+participant "Google API" as GAPI
+participant "Router (Angular)" as Router
+
+BU -> LPAC: Initiate Login with Google
+LPAC -> GAPI: Load Google Sign-In Script
+alt Script Successfully Loaded
+    LPAC -> GAPI: Initialize Google Sign-In
+    BU -> GAPI: Authenticate with Google
+    GAPI --> LPAC: Return idToken
+    LPAC -> HC: POST /PatientAccount/login/google (idToken)
+    HC -> API: Validate idToken
+    alt Validation Success
+        API --> HC: Return user profile and token
+        HC --> LPAC: Return success response
+        LPAC -> LocalStorage: Save profile and token
+        LPAC -> Router: Redirect to /manage-account
+        Router --> BU: Redirected to Manage Account
+    else Validation Failed
+        API --> HC: Return error
+        HC --> LPAC: Pass error response
+        LPAC -> BU: Show login error message
+    end
+else Script Loading Failed
+    LPAC -> BU: Show script loading error
+end
+
+== Simulated Login Flow ==
+BU -> LPAC: Enter email for simulated login
+LPAC -> HC: GET /PatientAccount/email/{email}
+HC -> API: Fetch user profile by email
+alt Email Found
+    API --> HC: Return user profile
+    HC --> LPAC: Pass user profile
+    LPAC -> LocalStorage: Save simulated profile
+    LPAC -> Router: Redirect to /manage-account
+    Router --> BU: Redirected to Manage Account
+else Email Not Found
+    API --> HC: Return error
+    HC --> LPAC: Pass error response
+    LPAC -> BU: Show email not found error
+end
+
+@enduml

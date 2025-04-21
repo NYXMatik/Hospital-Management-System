@@ -1,0 +1,101 @@
+@startuml
+actor User as "User"
+
+box "Frontend" #LightBlue
+participant SearchComponent as SearchComponent
+participant Service as Service
+participant UpdateComponent as UpdateComponent
+participant Router as Router
+end box
+
+box "Backend" #LightGreen
+participant WebApi as BackendAPI
+end box
+
+== Page Initialization ==
+User -> SearchComponent: Access Search X
+activate SearchComponent
+SearchComponent -> Service: getX()
+activate Service
+Service -> BackendAPI: GET /api/X
+activate BackendAPI
+BackendAPI --> Service: X list
+deactivate BackendAPI
+Service --> SearchComponent: X list
+deactivate Service
+SearchComponent --> User: Presents list with all X
+deactivate SearchComponent
+
+== Searching X ==
+User -> SearchComponent: Input search filters (t, y, z) \n and click "Search"
+activate SearchComponent
+SearchComponent -> Service: filterStaffs(t, y, z)
+activate Service
+Service -> BackendAPI: GET /api/X/filter?t={t}&y={y}&z={z}
+activate BackendAPI
+BackendAPI --> Service: Response (filtered list or error message)
+deactivate BackendAPI
+Service --> SearchComponent: Response (filtered list or error message)
+deactivate Service
+
+alt Success
+    SearchComponent --> User: Presents filtered X list
+else Error
+    SearchComponent --> User: Presents message "No X found"
+    deactivate SearchComponent
+end
+
+== Editing X ==
+User -> SearchComponent: Click "Edit" on a X member
+activate SearchComponent
+SearchComponent -> Router: Navigate to "Update X"
+activate Router
+deactivate Router
+SearchComponent -> UpdateComponent: Open modal with X details
+activate UpdateComponent
+deactivate SearchComponent
+deactivate UpdateComponent
+note right of UpdateComponent: See 3_ProcessView in UC-Update
+
+== Deactivating X ==
+User -> SearchComponent: Click "Deactivate" on a X member
+activate SearchComponent
+SearchComponent -> Service: deactivateX(X.id)
+activate Service
+Service -> BackendAPI: DELETE /api/X/{id}
+activate BackendAPI
+BackendAPI --> Service: Deactivation confirmation
+deactivate BackendAPI
+Service --> SearchComponent: Deactivation confirmation
+deactivate Service
+
+alt Success
+    SearchComponent --> User: Presents message "X desactivated successufully"
+    SearchComponent -> Service: getX() (reload updated list)
+    activate Service
+    Service -> BackendAPI: GET /api/X
+    activate BackendAPI
+    BackendAPI --> Service: Updated X list
+    deactivate BackendAPI
+    Service --> SearchComponent: Updated X list
+    deactivate Service
+    SearchComponent --> User: Presents updated X list
+
+else Error
+    SearchComponent --> User: Presents message "Error deactivating X"
+    SearchComponent -> Service: getX() (reload updated list)
+    activate Service
+    Service -> BackendAPI: GET /api/X
+    activate BackendAPI
+    BackendAPI --> Service: Updated X list
+    deactivate BackendAPI
+    Service --> SearchComponent: Updated X list
+    deactivate Service
+    SearchComponent --> User: Presents updated X list
+    deactivate SearchComponent
+
+end
+
+@enduml
+
+

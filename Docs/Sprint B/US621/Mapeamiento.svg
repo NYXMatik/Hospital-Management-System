@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <style>
+    .box {
+      fill: #f0f0f0;
+      stroke: #000;
+      stroke-width: 2;
+    }
+    .arrow {
+      fill: none;
+      stroke: #000;
+      stroke-width: 2;
+    }
+    .text {
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      text-anchor: middle;
+    }
+  </style>
+
+  <!-- Level 2: Business Logic -->
+  <g>
+    <!-- Patient Registration Logic -->
+    <rect class="box" x="50" y="50" width="200" height="80"/>
+    <text class="text" x="150" y="90">Patient Registration Logic</text>
+    
+    <!-- Patient Login Logic -->
+    <rect class="box" x="50" y="150" width="200" height="80"/>
+    <text class="text" x="150" y="190">Patient Login Logic</text>
+
+    <!-- Patient Profile Logic -->
+    <rect class="box" x="50" y="250" width="200" height="80"/>
+    <text class="text" x="150" y="290">Patient Profile Logic</text>
+
+    <!-- Email Verification Logic -->
+    <rect class="box" x="50" y="350" width="200" height="80"/>
+    <text class="text" x="150" y="390">Email Verification Logic</text>
+  </g>
+
+  <!-- Level 3: Technical Implementation -->
+  <g>
+    <!-- PatientRegistrationController -->
+    <rect class="box" x="550" y="50" width="200" height="80"/>
+    <text class="text" x="650" y="90">PatientRegistrationController</text>
+
+    <!-- PatientProfileService -->
+    <rect class="box" x="550" y="150" width="200" height="80"/>
+    <text class="text" x="650" y="190">PatientProfileService</text>
+
+    <!-- PatientLoginService -->
+    <rect class="box" x="550" y="250" width="200" height="80"/>
+    <text class="text" x="650" y="290">PatientLoginService</text>
+
+    <!-- PatientAccount -->
+    <rect class="box" x="550" y="350" width="200" height="80"/>
+    <text class="text" x="650" y="390">PatientAccount</text>
+  </g>
+
+  <!-- Arrows between Level 2 and Level 3 -->
+  <line class="arrow" x1="250" y1="90" x2="550" y2="90"/>
+  <polygon class="arrow" points="540,85 550,90 540,95"/>
+
+  <line class="arrow" x1="250" y1="190" x2="550" y2="190"/>
+  <polygon class="arrow" points="540,185 550,190 540,195"/>
+
+  <line class="arrow" x1="250" y1="290" x2="550" y2="290"/>
+  <polygon class="arrow" points="540,285 550,290 540,295"/>
+
+  <line class="arrow" x1="250" y1="390" x2="550" y2="390"/>
+  <polygon class="arrow" points="540,385 550,390 540,395"/>
+</svg>

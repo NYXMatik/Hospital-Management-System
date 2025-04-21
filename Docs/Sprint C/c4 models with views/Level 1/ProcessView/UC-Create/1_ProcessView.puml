@@ -1,0 +1,18 @@
+@startuml
+actor User
+participant "System" as System
+
+User -> System: Access "Create New X"
+System -> User: Show form to create X
+
+User -> System: Submit new X data
+alt Success
+    System -> User: Display success message
+else Failure
+    System -> User: Display error message
+end
+@enduml
+
+
+
+

@@ -1,0 +1,19 @@
+@startuml getPackagingSD
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+box "<<System(C4)>>\n SARM"
+participant WebApi as mdl <<Container(C4)>>
+mdl -> mdl: POST createX(...)
+alt There are no errors during operation
+mdl --> mdl: 201 staff profile created
+else There are errors during operation
+mdl --> mdl: 403 Could not create staff profile
+end
+
+end box
+
+@enduml

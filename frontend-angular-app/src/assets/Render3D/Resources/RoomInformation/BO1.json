@@ -1,0 +1,11 @@
+{
+    "RoomId": "BO1",
+    "specialization": "Orthopedic",
+    "schedule": [
+        {
+            "startTime": "07:20",
+            "endTime": "12:00",
+            "activity": "Surgery"
+        }
+    ]
+}

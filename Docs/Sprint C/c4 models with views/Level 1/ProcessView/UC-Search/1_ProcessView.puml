@@ -1,0 +1,17 @@
+@startuml
+actor User
+participant "System" as System
+
+User -> System: Access Search X
+System -> User: Show list with all X
+
+User -> System: Input search filters and click "Search"
+alt Success
+    System -> User: Presents filtered X list
+else Failure
+    System -> User: Display error message
+end
+@enduml
+
+
+

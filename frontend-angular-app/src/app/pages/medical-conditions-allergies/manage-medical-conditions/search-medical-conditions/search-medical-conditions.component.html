@@ -1,0 +1,49 @@
+<div class="form-container">
+  <button (click)="toggleExpansion()">
+    {{ isExpanded ? '▲ ' : '▼ ' }}
+  </button>
+
+  <h2>Search Medical Conditions</h2>
+
+  <div *ngIf="isExpanded" class="form-content">
+    <div class="search-page">
+      <!-- Left side -->
+      <div class="search-forms">
+        <!-- Messages -->
+        <div *ngIf="error" class="error-message">
+          <p>{{ error }}</p>
+        </div>
+        <div *ngIf="success" class="success-message">
+          <p>{{ success }}</p>
+        </div>
+        <div *ngIf="isLoading" class="loading">
+          <p>Loading...</p>
+        </div>
+
+        <app-search-form
+          [fields]="searchFields"
+          (search)="handleSearch($event)"
+        ></app-search-form>
+      </div>
+
+      <!-- Right side -->
+      <div class="list-container">
+        <app-result-list
+          [items]="medicalConditionList"
+          [actions]="actionButtons"
+          (actionClick)="handleAction($event)"
+        ></app-result-list>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isModalActive" class="modal-overlay">
+    <div class="modal-container">
+      <app-update-medical-conditions
+        [medicalCondition]="selectedMedicalCondition"
+        [isModal]="true"
+        (close)="closeEditModal()"
+      ></app-update-medical-conditions>
+    </div>
+  </div>
+</div>

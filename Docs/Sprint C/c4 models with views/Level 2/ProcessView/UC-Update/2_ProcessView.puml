@@ -1,0 +1,39 @@
+@startuml
+actor User
+
+box "Frontend/UI" #LightBlue
+participant "SPA" as Frontend
+end box
+
+box "Backend/API" #LightGreen
+participant "WebApi" as Backend
+participant "MedicalRecordManagement" as MRM
+end box
+
+User -> Frontend: Select "Edit"
+activate Frontend
+Frontend -> Frontend: Render filled form
+
+User -> Frontend: Edit form and submit
+Frontend -> Backend: PATCH /api/X/{id}
+activate Backend
+
+Backend -> Backend: Validate data
+Backend -> MRM: Send PATCH X request
+activate MRM
+MRM -> MRM: PATCH X
+
+alt Success
+    MRM --> Backend: Confirmation
+    Backend --> Frontend: Return updated object
+    Frontend -> User: Display success message
+else Failure
+    MRM --> Backend: Error (e.g., invalid data)
+    deactivate MRM
+    Backend --> Frontend: Return error details
+    deactivate Backend
+    Frontend -> User: Display error message
+    deactivate Frontend
+end
+
+@enduml

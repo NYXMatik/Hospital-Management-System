@@ -1,0 +1,32 @@
+@startuml
+
+rectangle "Operation Request Aggregate" #ccbbff{
+class OperationRequest <<AggregateRoot>> <<Entity>>
+    class RequestID << (V, pink) Value Object >> <<identifier>>{
+        - String id
+    }
+    class DeadlineDate << (V, pink) Value Object >>{
+        - Date deadline
+    }
+    note top of DeadlineDate
+         the suggested deadline to perform the operation
+    end note
+    class Priority << (V, pink) Value Object >>{
+        - String priority
+    }
+    note right of Priority
+              Elective, Urgent, Emergency
+    end note
+    class Status << (V, pink) Value Object >>{
+        - Enum status
+    }
+    note bottom of Status
+         planned or requested
+    end note
+
+    OperationRequest "1" -up-> "1" RequestID : is identified by
+    OperationRequest "1" -right-> "1" DeadlineDate : owns a
+    OperationRequest "1" --> "1" Priority : owns a
+    OperationRequest "1" -left-> "1" Status : owns a
+
+@enduml

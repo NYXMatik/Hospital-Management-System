@@ -1,0 +1,53 @@
+@startuml sd
+
+participant Route as route
+participant xController as ctrl
+participant xService as svc
+participant xDTO as dto
+participant xIRepository as irepo
+participant xRepository as repo
+participant xMapper as mapp
+participant xDataModel as dm
+participant xContext as context
+
+
+activate route
+route -> ctrl : GetXByY(y)
+activate ctrl
+ctrl -> svc : GetByY(y)
+activate svc
+svc -> irepo : GetXByYAsync(y)
+activate irepo
+irepo -> repo : implemnts GetXByYAsync
+activate repo
+repo -> context : Set<XDataModel>().\n.FirstAsync(p => p.y==y)
+activate context
+context --> repo : return xDataModel with y
+deactivate context
+alt xDataModel is Active
+repo -> mapp : ToDomain(XDataModel)
+note right of mapp: See "ToDomainMapper.puml"
+mapp --> repo : return XDataModel
+deactivate mapp
+repo --> irepo : return X
+deactivate repo
+irepo --> svc : return x
+deactivate irepo
+alt x != null && x is Active
+    svc -> dto : XInformationDTO.ToDTO(x)
+    activate dto
+    note right of dto: convert x in xDTO
+    dto --> svc : return xDTO
+    deactivate dto
+    svc --> ctrl : return list X'sDTO
+end
+deactivate svc
+alt success case
+    ctrl --> route : Send code 200 (GET)
+else failure case
+    ctrl --> route : Send code 404 (NOT FOUND)
+end
+deactivate ctrl
+deactivate route
+
+@enduml

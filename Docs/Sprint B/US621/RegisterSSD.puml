@@ -1,0 +1,29 @@
+@startuml RegisterSSD
+title System Sequence Diagram - Register Patient Component
+
+actor User
+participant "RegisterPatientComponent" as RPC
+participant "HttpClient" as HC
+participant "PatientAccount API" as API
+
+== Filling and Submitting the Registration Form ==
+User -> RPC: Fill Registration Form
+User -> RPC: Submit Form
+alt Invalid Form Data
+    RPC: Show "Please fill out the form correctly." Message
+else Valid Form Data
+    RPC -> HC: POST /api/v1/PatientAccount/register
+    HC -> API: Register Patient
+    alt Registration Success
+        API --> HC: Return Success Response
+        HC --> RPC: Notify Registration Success
+        RPC: Show "Patient registered successfully!" Message
+        RPC: Reset Form Fields
+    else Registration Failure
+        API --> HC: Return Error (e.g., Validation Errors)
+        HC --> RPC: Notify Registration Failure
+        RPC: Show Error Messages
+    end
+end
+
+@enduml

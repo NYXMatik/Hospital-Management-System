@@ -1,0 +1,71 @@
+/* operation-update.component.css */
+.update-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 800px;
+    max-height: 90%;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1000;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .message {
+    margin-bottom: 20px;
+  }
+  
+  .version-form {
+    margin-bottom: 20px;
+  }
+  
+  .phases-section {
+    margin-bottom: 20px;
+  }
+  
+  .phase-card {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .staff-section {
+    margin-top: 10px;
+  }
+  
+  .staff-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .staff-item select,
+  .staff-item input {
+    margin-right: 10px;
+  }
+  
+  .form-actions {
+    text-align: center;
+  }
+  
+  .updated-details {
+    margin-top: 20px;
+  }

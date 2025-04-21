@@ -1,0 +1,10 @@
+@startuml SSD_ViewOperationDetails
+actor User
+participant System
+
+User -> System: clickViewDetails()
+System -> System: fetchOperationDetails()
+System --> User: showDetailsModal()
+User -> System: closeDetailsModal()
+System --> User: hideDetailsModal()
+@enduml

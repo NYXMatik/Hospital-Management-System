@@ -1,0 +1,36 @@
++------------------------------------------------------------+
+|                    Frontend Implementation                 |
+|  +------------------------------------------------------   |
+|  |  Angular Application                                    |
+|  |  - UpdateAccountComponent                               |
+|  |  - HttpClient for HTTP requests                         |
+|  |  - ngModel for two-way data binding                     |
+|  |  - Template-driven forms for user input validation      |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+
+
+                    | (HTTP Request)
+
++------------------------------------------------------------+
+|                    Backend Implementation                  |
+|  +------------------------------------------------------   |
+|  |  Express.js / ASP.NET Core API                          |
+|  |  - Controller for handling PUT request:                 |
+|  |     PUT /PatientAccount/{userId}                        |
+|  |  - Business logic for validation and update             |
+|  |  - Database interaction (using ORM)                     |
+|  |  - Return JSON response (success/error)                 |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+
+
+                    | (Database Operations)
+
++------------------------------------------------------------+
+|                    Database Implementation                |
+|  +------------------------------------------------------   |
+|  |  SQL (MySQL/PostgreSQL) or NoSQL (MongoDB)              |
+|  |  - Table or Collection for PatientAccount               |
+|  |  - ORM for data access (Sequelize, TypeORM, Mongoose)   |
+|  |  - CRUD operations for updating account data            |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+

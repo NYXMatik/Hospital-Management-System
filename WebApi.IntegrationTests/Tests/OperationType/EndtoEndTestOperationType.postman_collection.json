@@ -1,0 +1,502 @@
+{
+	"info": {
+		"_postman_id": "4a3deeea-45d3-4f0c-97e5-d8e8563ee841",
+		"name": "EndtoEndTestOperationType",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39206956"
+	},
+	"item": [
+		{
+			"name": "OperationTypeGetAll",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"  pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the required Content-Type header of application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body is an array\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Array follows the expected schema\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('array');\r",
+							"    responseData.forEach(function(item) {\r",
+							"        pm.expect(item).to.be.an('object');\r",
+							"        // Add more specific schema checks for each item if needed\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5005/api/OperationType",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"api",
+						"OperationType"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OperationTypeCreateSuccess",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.name).to.exist;\r",
+							"    pm.expect(responseData.versions).to.exist.and.to.be.an('array');\r",
+							"    \r",
+							"    responseData.versions.forEach(version => {\r",
+							"        pm.expect(version.versionNumber).to.exist;\r",
+							"        pm.expect(version.date).to.exist;\r",
+							"        pm.expect(version.status).to.exist;\r",
+							"        pm.expect(version.pending).to.exist;\r",
+							"        \r",
+							"        version.phases.forEach(phase => {\r",
+							"            pm.expect(phase.name).to.exist;\r",
+							"            pm.expect(phase.description).to.exist;\r",
+							"            pm.expect(phase.duration).to.exist;\r",
+							"            pm.expect(phase.phaseStep).to.exist;\r",
+							"            \r",
+							"            phase.staffList.forEach(staff => {\r",
+							"                pm.expect(staff.specialty).to.exist;\r",
+							"                pm.expect(staff.role).to.exist;\r",
+							"                pm.expect(staff.quantity).to.exist;\r",
+							"            });\r",
+							"        });\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Date is in a valid date format\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData.versions).to.be.an('array');\r",
+							"  responseData.versions.forEach(function(version) {\r",
+							"    pm.expect(version.date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);\r",
+							"  });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Versions array is present and contains expected number of elements\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.versions).to.exist;\r",
+							"    pm.expect(responseData.versions).to.be.an('array');\r",
+							"    pm.expect(responseData.versions).to.have.lengthOf(1);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"General Surgery\",\r\n    \"versions\": [\r\n      {\r\n        \"versionNumber\": 1,\r\n        \"date\": \"2024-10-01\",\r\n        \"status\": true,\r\n        \"pending\": false,\r\n        \"phases\": [\r\n          {\r\n            \"name\": \"Preparation\",\r\n            \"description\": \"Initial setup and preparation for surgery.\",\r\n            \"duration\": \"00:30:00\",\r\n            \"phaseStep\": 1,\r\n            \"staffList\": [\r\n              {\r\n                \"specialty\": \"Nursing\",\r\n                \"role\": \"Assistant\",\r\n                \"quantity\": 2\r\n              },\r\n              {\r\n                \"specialty\": \"Anesthesiology\",\r\n                \"role\": \"Anesthetist\",\r\n                \"quantity\": 1\r\n              }\r\n            ]\r\n          },\r\n          {\r\n            \"name\": \"Operation\",\r\n            \"description\": \"Main surgical procedure.\",\r\n            \"duration\": \"02:00:00\",\r\n            \"phaseStep\": 2,\r\n            \"staffList\": [\r\n              {\r\n                \"specialty\": \"Surgery\",\r\n                \"role\": \"Lead Surgeon\",\r\n                \"quantity\": 1\r\n              },\r\n              {\r\n                \"specialty\": \"Surgery\",\r\n                \"role\": \"Assistant Surgeon\",\r\n                \"quantity\": 1\r\n              },\r\n              {\r\n                \"specialty\": \"Nursing\",\r\n                \"role\": \"Surgical Nurse\",\r\n                \"quantity\": 2\r\n              }\r\n            ]\r\n          },\r\n          {\r\n            \"name\": \"Recovery\",\r\n            \"description\": \"Post-surgery patient stabilization.\",\r\n            \"duration\": \"01:00:00\",\r\n            \"phaseStep\": 3,\r\n            \"staffList\": [\r\n              {\r\n                \"specialty\": \"Nursing\",\r\n                \"role\": \"Recovery Nurse\",\r\n                \"quantity\": 1\r\n              },\r\n              {\r\n                \"specialty\": \"Anesthesiology\",\r\n                \"role\": \"Anesthetist\",\r\n                \"quantity\": 1\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5005/api/OperationType",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"api",
+						"OperationType"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OperationTypeCreateFailure",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {\r",
+							"  pm.expect(pm.response.code).to.equal(400);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has a valid JSON schema\", function () {\r",
+							"    pm.response.to.be.json; \r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('array');\r",
+							"    pm.expect(responseData).to.have.lengthOf.at.least(1, \"Array should not be empty\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Content-Type header is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"General Surgery\",\r\n    \"versions\": [\r\n      {\r\n        \"versionNumber\": 1,\r\n        \"date\": \"2024-10-01\",\r\n        \"status\": true,\r\n        \"pending\": false,\r\n        \"phases\": [\r\n          {\r\n            \"name\": \"Preparation\",\r\n            \"description\": \"Initial setup and preparation for surgery.\",\r\n            \"duration\": \"00:30:00\",\r\n            \"phaseStep\": 1,\r\n            \"staffList\": [\r\n              {\r\n                \"specialty\": \"Nursing\",\r\n                \"role\": \"Assistant\",\r\n                \"quantity\": 2\r\n              },\r\n              {\r\n                \"specialty\": \"Anesthesiology\",\r\n                \"role\": \"Anesthetist\",\r\n                \"quantity\": 1\r\n              }\r\n            ]\r\n          },\r\n          {\r\n            \"name\": \"Operation\",\r\n            \"description\": \"Main surgical procedure.\",\r\n            \"duration\": \"02:00:00\",\r\n            \"phaseStep\": 2,\r\n            \"staffList\": [\r\n              {\r\n                \"specialty\": \"Surgery\",\r\n                \"role\": \"Lead Surgeon\",\r\n                \"quantity\": 1\r\n              },\r\n              {\r\n                \"specialty\": \"Surgery\",\r\n                \"role\": \"Assistant Surgeon\",\r\n                \"quantity\": 1\r\n              },\r\n              {\r\n                \"specialty\": \"Nursing\",\r\n                \"role\": \"Surgical Nurse\",\r\n                \"quantity\": 2\r\n              }\r\n            ]\r\n          },\r\n          {\r\n            \"name\": \"Recovery\",\r\n            \"description\": \"Post-surgery patient stabilization.\",\r\n            \"duration\": \"01:00:00\",\r\n            \"phaseStep\": 3,\r\n            \"staffList\": [\r\n              {\r\n                \"specialty\": \"Nursing\",\r\n                \"role\": \"Recovery Nurse\",\r\n                \"quantity\": 1\r\n              },\r\n              {\r\n                \"specialty\": \"Anesthesiology\",\r\n                \"role\": \"Anesthetist\",\r\n                \"quantity\": 1\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5005/api/OperationType",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"api",
+						"OperationType"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OperationTypeGetByName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('array');\r",
+							"    \r",
+							"    responseData.forEach(function(operation) {\r",
+							"        pm.expect(operation).to.have.property('name').that.is.a('string');\r",
+							"        pm.expect(operation).to.have.property('versions').that.is.an('array');\r",
+							"        \r",
+							"        operation.versions.forEach(function(version) {\r",
+							"            pm.expect(version).to.have.property('versionNumber').that.is.a('number');\r",
+							"            pm.expect(version).to.have.property('date').that.is.a('string');\r",
+							"            pm.expect(version).to.have.property('status').that.is.a('boolean');\r",
+							"            pm.expect(version).to.have.property('pending').that.is.a('boolean');\r",
+							"            pm.expect(version).to.have.property('phases').that.is.an('array');\r",
+							"            \r",
+							"            version.phases.forEach(function(phase) {\r",
+							"                pm.expect(phase).to.have.property('name').that.is.a('string');\r",
+							"                pm.expect(phase).to.have.property('description').that.is.a('string');\r",
+							"                pm.expect(phase).to.have.property('duration').that.is.a('string');\r",
+							"                pm.expect(phase).to.have.property('phaseStep').that.is.a('number');\r",
+							"                pm.expect(phase).to.have.property('staffList').that.is.an('array');\r",
+							"                \r",
+							"                phase.staffList.forEach(function(staff) {\r",
+							"                    pm.expect(staff).to.have.property('specialty').that.is.a('string');\r",
+							"                    pm.expect(staff).to.have.property('role').that.is.a('string');\r",
+							"                    pm.expect(staff).to.have.property('quantity').that.is.a('number');\r",
+							"                });\r",
+							"            });\r",
+							"        });\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate response attributes\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    responseData.forEach(operationType => {\r",
+							"        pm.expect(operationType.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r",
+							"        \r",
+							"        operationType.versions.forEach(version => {\r",
+							"            pm.expect(version.versionNumber).to.be.a('number').and.to.be.at.least(0, \"Version number should be non-negative\");\r",
+							"            pm.expect(version.date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/); // Assuming valid date format is YYYY-MM-DD\r",
+							"            pm.expect(version.status).to.be.a('boolean');\r",
+							"            pm.expect(version.pending).to.be.a('boolean');\r",
+							"            \r",
+							"            version.phases.forEach(phase => {\r",
+							"                pm.expect(phase.duration).to.be.a('string');\r",
+							"                \r",
+							"                phase.staffList.forEach(staff => {\r",
+							"                    pm.expect(staff.quantity).to.be.a('number').and.to.be.at.least(0, \"Quantity should be non-negative\");\r",
+							"                });\r",
+							"            });\r",
+							"        });\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "General",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5005/api/OperationType",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"api",
+						"OperationType"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OperationTypeDisable",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Content-Type header is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate the response schema\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.name).to.exist.and.to.be.a('string');\r",
+							"    pm.expect(responseData.versions).to.exist.and.to.be.an('array');\r",
+							"    \r",
+							"    responseData.versions.forEach(function(version) {\r",
+							"        pm.expect(version.versionNumber).to.exist.and.to.be.a('number');\r",
+							"        pm.expect(version.date).to.exist.and.to.be.a('string');\r",
+							"        pm.expect(version.status).to.exist.and.to.be.a('boolean');\r",
+							"        pm.expect(version.pending).to.exist.and.to.be.a('boolean');\r",
+							"        \r",
+							"        version.phases.forEach(function(phase) {\r",
+							"            pm.expect(phase.name).to.exist.and.to.be.a('string');\r",
+							"            pm.expect(phase.description).to.exist.and.to.be.a('string');\r",
+							"            pm.expect(phase.duration).to.exist.and.to.be.a('string');\r",
+							"            pm.expect(phase.phaseStep).to.exist.and.to.be.a('number');\r",
+							"            \r",
+							"            phase.staffList.forEach(function(staff) {\r",
+							"                pm.expect(staff.specialty).to.exist.and.to.be.a('string');\r",
+							"                pm.expect(staff.role).to.exist.and.to.be.a('string');\r",
+							"                pm.expect(staff.quantity).to.exist.and.to.be.a('number');\r",
+							"            });\r",
+							"        });\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5005/api/OperationType/General%20Surgery",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"api",
+						"OperationType",
+						"General%20Surgery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OperationTypeUpdate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"  pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Content-Type header is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Name field must be a non-empty string\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Versions array is present and contains expected number of elements\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.versions).to.exist.and.to.be.an('array');\r",
+							"    pm.expect(responseData.versions).to.have.lengthOf.at.least(1);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"versionNumber\": 2,\r\n    \"date\": \"2024-10-01\",\r\n    \"status\": true,\r\n    \"pending\": false,\r\n    \"phases\": [\r\n      {\r\n        \"name\": \"Preparation\",\r\n        \"description\": \"Initial setup and preparation for surgery.\",\r\n        \"duration\": \"00:30:00\",\r\n        \"phaseStep\": 1,\r\n        \"staffList\": [\r\n          {\r\n            \"specialty\": \"Nursing\",\r\n            \"role\": \"Assistant\",\r\n            \"quantity\": 2\r\n          },\r\n          {\r\n            \"specialty\": \"Anesthesiology\",\r\n            \"role\": \"Anesthetist\",\r\n            \"quantity\": 1\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"name\": \"Operation\",\r\n        \"description\": \"Main surgical procedure.\",\r\n        \"duration\": \"02:00:00\",\r\n        \"phaseStep\": 2,\r\n        \"staffList\": [\r\n          {\r\n            \"specialty\": \"Surgery\",\r\n            \"role\": \"Lead Surgeon\",\r\n            \"quantity\": 1\r\n          },\r\n          {\r\n            \"specialty\": \"Surgery\",\r\n            \"role\": \"Assistant Surgeon\",\r\n            \"quantity\": 1\r\n          },\r\n          {\r\n            \"specialty\": \"Nursing\",\r\n            \"role\": \"Surgical Nurse\",\r\n            \"quantity\": 2\r\n          }\r\n        ]\r\n      },\r\n      {\r\n        \"name\": \"Recovery\",\r\n        \"description\": \"Post-surgery patient stabilization.\",\r\n        \"duration\": \"01:00:00\",\r\n        \"phaseStep\": 3,\r\n        \"staffList\": [\r\n          {\r\n            \"specialty\": \"Nursing\",\r\n            \"role\": \"Recovery Nurse\",\r\n            \"quantity\": 1\r\n          },\r\n          {\r\n            \"specialty\": \"Anesthesiology\",\r\n            \"role\": \"Anesthetist\",\r\n            \"quantity\": 1\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5005/api/OperationType/General%20Surgery",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"api",
+						"OperationType",
+						"General%20Surgery"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

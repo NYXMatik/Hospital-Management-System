@@ -1,0 +1,111 @@
+import { Router } from 'express';
+import { celebrate, Joi, errors } from 'celebrate';
+
+import { Container } from 'typedi';
+import IMedicalConditionController from '../../controllers/IControllers/IMedicalConditionController'; 
+
+import config from "../../../config";
+
+const route = Router();
+
+export default (app: Router) => {
+  app.use('/medical-conditions', route);
+
+  const ctrl = Container.get(config.controllers.medicalCondition.name) as IMedicalConditionController;
+
+  route.post('',
+    celebrate({
+      body: Joi.object({
+        code: Joi.string()
+          .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ0-9\-_.: ]+$/)
+          .required()
+          .messages({
+            'string.pattern.base': 'Code must only contain alphanumeric characters (letters, numbers), spaces, and the following special characters: -, _, ., :.',
+            'string.empty': 'Code cannot be empty.',
+            'any.required': 'Code is required.',
+          }),
+        designation: Joi.string()
+          .regex(/^(?=.*[A-Za-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ0-9\s\-\(\)]+$/)
+          .min(5)
+          .max(50)
+          .required()
+          .messages({
+            'string.pattern.base': 'Designation must contain at least one letter and may include alphanumeric characters (letters, numbers), spaces, hyphens (-), and parentheses.',
+            'string.min': 'Designation must be at least 5 characters long.',
+            'string.max': 'Designation must be at most 50 characters long.',
+            'string.empty': 'Designation cannot be empty or just whitespace.',
+            'any.required': 'Designation is required.',
+          }),
+        description: Joi.string()
+          .allow(null, '') 
+          .regex(/^\d+$/, { invert: true }) // Reject strings containing only numbers
+          .messages({
+            'string.pattern.invert.base': 'Description cannot contain only numbers.',
+            'string.base': 'Description must be a string.',
+          }),
+        commonSymptoms: Joi.array()
+          .items(
+            Joi.string()
+              .trim()
+              .min(1)
+              .required()
+              .messages({
+                'string.empty': 'Symptoms cannot be empty or just whitespace.',
+                'any.required': 'Each symptom must be a valid string.',
+              })
+          )
+          .min(1)
+          .required()
+          .messages({
+            'array.min': 'A medical condition must have at least one common symptom.',
+            'any.required': 'CommonSymptoms is required.',
+          }),
+      }),
+    }),
+    (req, res, next) => ctrl.createMedicalCondition(req, res, next)
+  );
+
+  route.patch('/:code',
+    celebrate({
+      params: Joi.object({
+        code: Joi.string()
+      }),
+      body: Joi.object({
+        designation: Joi.string()
+          .regex(/^(?=.*[A-Za-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ0-9\s\-\(\)]+$/)
+          .min(5)
+          .max(50)
+          .optional()
+          .messages({
+            'string.pattern.base': 'Designation must contain at least one letter and may include alphanumeric characters (letters, numbers), spaces, hyphens (-), and parentheses.',
+            'string.min': 'Designation must be at least 5 characters long.',
+            'string.max': 'Designation must be at most 50 characters long.',
+          }),
+        description: Joi.string()
+          .regex(/^\d+$/, { invert: true }) // Reject strings containing only numbers
+          .optional()
+          .messages({
+            'string.pattern.invert.base': 'Description cannot contain only numbers.',
+            'string.base': 'Description must be a string.',
+          }),
+      }),
+    }),
+    (req, res, next) => ctrl.partialUpdateMedicalCondition(req, res, next)
+  );
+
+  route.get('',
+    celebrate({
+      query: Joi.object({
+        code: Joi.string()
+          .optional()
+          .allow(null, ''),
+        designation: Joi.string()
+          .optional()
+          .allow(null, '')
+      }),
+    }),
+    (req, res, next) => ctrl.searchMedicalConditions(req, res, next)
+  );
+
+  app.use(errors());
+};

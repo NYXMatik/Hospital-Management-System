@@ -1,0 +1,114 @@
+name: Deploy Sarm Application
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Checkout Repository
+      - uses: actions/checkout@v3
+      
+      # 2. .NET Backend Setup
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore Backend Dependencies
+        run: dotnet restore WebApi/WebApi.csproj
+
+      - name: Build Backend
+        run: dotnet build WebApi/WebApi.csproj --configuration Release --no-restore
+
+      # 3. Test Backend (Optional)
+      # Uncomment the following to enable testing
+      # - name: Test Backend
+      #   run: dotnet test Domain.Tests/Domain.Tests.csproj
+
+      - name: Publish Backend
+        run: dotnet publish WebApi/WebApi.csproj -c Release -o backend-publish
+        
+      # 4. Prepare Deployment Structure
+      - name: Prepare Deployment Structure
+        run: |
+          mkdir -p sarm/backend sarm/frontend sarm/nodebackend
+          cp -r backend-publish/* sarm/backend/
+          
+          
+      # 5. Clean Existing Deployment on Server
+      - name: Clean Existing Deployment on Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: vsgate-ssh.dei.isep.ipp.pt
+          username: deployer
+          key: |
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+          port: 10469  # Consistent port
+          script: |
+            # Debugging: Verificar a chave privada
+            echo "Verificando a chave privada" 
+            echo "$SSH_PRIVATE_KEY"  
+            # Remove existing backend, frontend, and nodebackend
+            sudo rm -rf /var/www/sarm/backend/
+            sudo rm -rf /var/www/sarm/frontend/
+            sudo rm -rf /var/www/sarm/nodebackend/
+            
+            # Recreate the directories
+            sudo mkdir -p /var/www/sarm/backend/
+            sudo mkdir -p /var/www/sarm/frontend/
+            sudo mkdir -p /var/www/sarm/nodebackend/
+            
+            # Set ownership to deployer
+            sudo chown -R deployer:deployer /var/www/sarm/
+
+      # 6. Deploy to Server Using SCP
+      - name: Deploy to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: vsgate-ssh.dei.isep.ipp.pt
+          username: deployer
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 10469  # Consistent port
+          source: "sarm/"
+          target: "/var/www/sarm/"
+          strip_components: 0
+
+      # 7. Set Permissions on Server
+      - name: Set Permissions on Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: vsgate-ssh.dei.isep.ipp.pt
+          username: deployer
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 10469  # Consistent port
+          script: |
+            # Frontend -> owned by www-data for Nginx
+            sudo chown -R www-data:www-data /var/www/sarm/frontend/
+            
+            # .NET backend -> deployer or group=www-data
+            sudo chown -R deployer:www-data /var/www/sarm/backend/
+
+            # Node backend -> deployer or group=www-data
+            sudo chown -R deployer:www-data /var/www/sarm/nodebackend/
+            
+            # Set directory permissions
+            sudo chmod -R 755 /var/www/sarm/frontend/
+            sudo chmod -R 755 /var/www/sarm/backend/
+            sudo chmod -R 755 /var/www/sarm/nodebackend/
+      
+      # 8. Restart Services
+      - name: Restart Services
+        uses: appleboy/ssh-action@master
+        with:
+          host: vsgate-ssh.dei.isep.ipp.pt
+          username: deployer
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 10469  # Consistent port
+          script: |
+            sudo systemctl restart g74backend
+            sudo systemctl restart nginx

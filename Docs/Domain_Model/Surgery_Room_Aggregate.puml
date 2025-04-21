@@ -1,0 +1,35 @@
+@startuml
+
+rectangle "Surgery Room Aggregate" #eefccc{
+class SurgeryRoom <<AggregateRoot>> <<Entity>>
+    class RoomNumber << (V, pink) Value Object >> <<identifier>>{
+        - String number
+    }
+    class Type << (V, pink) Value Object >>{
+        - String type
+    }
+    class Capacity << (V, pink) Value Object >>{
+        - int numberOfStaff
+    }
+    class AssignedEquipment << (V, pink) Value Object >>{
+        - String equipments
+    }
+    class CurrentStatus << (V, pink) Value Object >>{
+        - Status currentStatus
+    }
+    note bottom of CurrentStatus
+          available, occupied, under maintenance
+    end note
+    class MaintenanceSlots << (V, pink) Value Object >>{
+         - String slots
+    }
+
+    SurgeryRoom "1" -up-> "1" RoomNumber : is identified by
+    SurgeryRoom "1" -up-> "1" Type : is characterized by a
+    SurgeryRoom "1" -left-> "1" Capacity : owns a
+    SurgeryRoom "1" -right-> "1" AssignedEquipment : owns
+    SurgeryRoom "1" --> "1" CurrentStatus : is characterized by a
+    SurgeryRoom "1" --> "1" MaintenanceSlots : defines
+}
+
+@enduml

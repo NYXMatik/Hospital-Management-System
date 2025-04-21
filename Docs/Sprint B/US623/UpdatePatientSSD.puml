@@ -1,0 +1,45 @@
+@startuml UpdatePatientSSD
+title System Sequence Diagram - Update Account Component
+
+actor User
+participant "UpdateAccountComponent" as UAC
+participant "LocalStorage" as LS
+participant "HttpClient" as HC
+participant "PatientAccount API" as API
+participant "Router (Angular)" as Router
+
+== Loading Account Details ==
+User -> UAC: Open Update Account Page
+UAC -> LS: Retrieve 'user' from LocalStorage
+alt User Found
+    LS --> UAC: Return User Details
+else User Not Found
+    UAC: Initialize with Default Account Details
+end
+
+== Updating Account ==
+User -> UAC: Fill Account Details and Submit
+alt Invalid Email
+    UAC: Show "Invalid Email" Error
+else Invalid Phone
+    UAC: Show "Invalid Phone Number" Error
+else Valid Details
+    UAC -> HC: PUT /api/v1/PatientAccount/{profileId}
+    HC -> API: Update Account with New Details
+    alt Update Success
+        API --> HC: Return Success Response
+        HC --> UAC: Update User in LocalStorage
+        UAC -> LS: Save Updated User
+        UAC -> Router: Redirect to /manage-account
+        Router --> User: Navigated to Manage Account
+    else Update Failed
+        API --> HC: Return Error (400 or Other)
+        alt 400 Bad Request
+            HC --> UAC: Show "Bad Request" Error
+        else Other Error
+            HC --> UAC: Show "Update Failed" Message
+        end
+    end
+end
+
+@enduml

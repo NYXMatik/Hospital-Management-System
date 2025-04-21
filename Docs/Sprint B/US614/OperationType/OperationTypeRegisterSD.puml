@@ -1,0 +1,49 @@
+@startuml SD_CreateOperationType
+actor User
+participant "CreateOperationComponent" as Component
+participant "GenericFormComponent" as Form
+participant "OperationTypeService" as Service
+participant "Backend API" as API
+
+User -> Component: clickCreateOperation()
+activate Component
+
+Component -> Component: initializeForm()
+Component -> Form: displayForm()
+activate Form
+
+User -> Form: enterOperationName()
+User -> Form: enterVersionDetails()
+
+loop for each phase
+    User -> Component: addPhase()
+    Component -> Component: createPhaseObject()
+    Component -> Form: displayPhaseForm()
+    User -> Form: enterPhaseDetails()
+    
+    loop for each staff
+        User -> Component: addStaffToPhase()
+        Component -> Component: createStaffObject()
+        Component -> Form: displayStaffForm()
+        User -> Form: enterStaffDetails()
+    end
+end
+
+User -> Component: clickSave()
+Component -> Component: validateOperation()
+
+alt valid operation
+    Component -> Service: addOperation(operationType)
+    activate Service
+    Service -> API: POST /api/operations
+    API --> Service: response
+    Service --> Component: success
+    Component --> User: showSuccessMessage()
+else invalid operation
+    Component --> User: showErrorMessage()
+end
+
+deactivate Service
+deactivate Form
+deactivate Component
+@enduml

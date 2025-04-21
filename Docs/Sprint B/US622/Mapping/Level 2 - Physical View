@@ -1,0 +1,32 @@
++------------------------------------------------------------+
+|                    User Interface (Frontend)              |
+|  +------------------------------------------------------   |
+|  |  Web Server (Nginx, Apache, or Static Hosting)          |
+|  |  - Hosts Angular App                                    |
+|  |  - Serves static files (HTML, CSS, JS)                  |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+
+
+                    | (HTTP Request)
+
++------------------------------------------------------------+
+|                    Backend API (REST)                     |
+|  +------------------------------------------------------   |
+|  |  Application Server (Node.js/ASP.NET Core)              |
+|  |  - Handles HTTP Requests (PUT /PatientAccount/{userId}) |
+|  |  - Business Logic: Validate and Update Account          |
+|  |  - Deployed in Cloud (AWS, Azure, etc.)                 |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+
+
+                    | (Database Operations)
+
++------------------------------------------------------------+
+|                    Database Server                        |
+|  +------------------------------------------------------   |
+|  |  Database Server (AWS RDS, Azure SQL, MongoDB)          |
+|  |  - MySQL/PostgreSQL or MongoDB                          |
+|  |  - Stores PatientAccount Data                           |
+|  |  - Deployed in cloud                                    |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+

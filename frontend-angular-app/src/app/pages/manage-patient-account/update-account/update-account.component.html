@@ -1,0 +1,54 @@
+<div class="account-update-form">
+  <h2>Update User Account</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" [(ngModel)]="accountDetails.name.fullName" name="name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" [(ngModel)]="accountDetails.email" name="email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="text" id="phoneNumber" [(ngModel)]="accountDetails.phoneNumber" name="phoneNumber">
+    </div>
+
+    <div class="form-group">
+      <label for="birthDate">Birth Date:</label>
+      <input type="date" id="birthDate" [(ngModel)]="accountDetails.birthDate" name="birthDate">
+    </div>
+
+    <div class="form-group">
+      <label for="street">Street:</label>
+      <input type="text" id="street" [(ngModel)]="accountDetails.address.street" name="street">
+    </div>
+
+    <div class="form-group">
+      <label for="city">City:</label>
+      <input type="text" id="city" [(ngModel)]="accountDetails.address.city" name="city">
+    </div>
+
+    <div class="form-group">
+      <label for="state">State:</label>
+      <input type="text" id="state" [(ngModel)]="accountDetails.address.state" name="state">
+    </div>
+
+    <div class="form-group">
+      <label for="postalCode">Postal Code:</label>
+      <input type="text" id="postalCode" [(ngModel)]="accountDetails.address.postalCode" name="postalCode">
+    </div>
+
+    <div class="form-group">
+      <label for="country">Country:</label>
+      <input type="text" id="country" [(ngModel)]="accountDetails.address.country" name="country">
+    </div>
+
+    <button type="submit" [disabled]="!accountDetails.name || !accountDetails.email">Save Changes</button>
+  </form>
+
+  <button (click)="goBack()">Go Back</button>
+</div>

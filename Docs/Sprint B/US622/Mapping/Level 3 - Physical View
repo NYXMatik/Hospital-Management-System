@@ -1,0 +1,34 @@
++------------------------------------------------------------+
+|                    Frontend (Angular)                     |
+|  +------------------------------------------------------   |
+|  |  Web Server (Nginx or Apache)                           |
+|  |  - Deployed on AWS EC2, Google Cloud, or any server    |
+|  |  - Serves Angular application                           |
+|  |  - Hosts static files (HTML, CSS, JS)                   |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+
+
+                    | (HTTP Request)
+
++------------------------------------------------------------+
+|                    Backend (API)                          |
+|  +------------------------------------------------------   |
+|  |  Node.js / Express or ASP.NET Core                     |
+|  |  - Deployed on AWS EC2 or Azure App Service            |   |
+|  |  - Communicates with frontend via REST API             |
+|  |  - Logs requests and responses to a monitoring system  |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+
+
+                    | (Database Operations)
+
++------------------------------------------------------------+
+|                    Database (SQL/NoSQL)                   |
+|  +------------------------------------------------------   |
+|  |  Database Server (AbsanteeDB)          |
+|  |  - MySQL                          |
+|  |  - Deployed in cloud (e.g., AWS, Azure, or Google Cloud)|
+|  |  - Manages PatientAccount Data                          |
+|  |  - Provides failover, backups, and replication         |
+|  +------------------------------------------------------   |
++------------------------------------------------------------+

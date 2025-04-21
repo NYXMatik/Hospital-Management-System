@@ -1,0 +1,19 @@
+@startuml getPackagingSD
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+box "<<System(C4)>>\n SARM"
+participant WebApi as mdl <<Container(C4)>>
+mdl -> mdl: DELETE SoftDelete(id) || HardDelete(id)
+alt There are no errors during operation
+mdl --> mdl: 200 X deactivated/eliminated with success
+else There are errors during operation
+mdl --> mdl: 404 X not found
+end
+
+end box
+
+@enduml

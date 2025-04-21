@@ -1,0 +1,19 @@
+@startuml getPackagingSD
+
+skinparam sequence {
+ParticipantBorderColor black
+ParticipantBackgroundColor white
+}
+
+box "<<System(C4)>>\n SARM"
+participant MasterDataLogistics as mdl <<Container(C4)>>
+mdl -> mdl: GET getX(...)
+alt There are no errors during operation
+mdl --> mdl: 200 x updated
+else There are errors during operation
+mdl --> mdl: 204/404 x Not Found
+end
+
+end box
+
+@enduml

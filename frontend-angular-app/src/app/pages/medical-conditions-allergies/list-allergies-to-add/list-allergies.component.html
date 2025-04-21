@@ -1,0 +1,50 @@
+<div class="form-container">
+  
+  <h2>Add all desired allergies</h2>
+
+  <!-- Mensagens -->
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+  <div *ngIf="success" class="success-message">
+    <p>{{ success }}</p>
+  </div>
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading...</p>
+  </div>
+  
+  <div class="search-page">
+    <!-- Lado esquerdo -->
+    <div class="search-forms">
+
+      <app-search-form
+        [fields]="searchFields"
+        (search)="handleSearch($event)"
+      ></app-search-form>
+
+
+      <!-- Allergy updated details -->
+      <div *ngIf="selectedAllergy" class="modal-container">
+        <button class="close-button" (click)="closeModal()">&#x2715;</button>
+        <h3>Allergy Details:</h3>
+        <p><strong>Code:</strong> {{ selectedAllergy.code }}</p>
+        <p><strong>Designation:</strong> {{ selectedAllergy.designation }}</p>
+        <p><strong>Description:</strong> {{ selectedAllergy.description }}</p>
+      </div>
+    </div>
+
+    <!-- Lado direito -->
+    <div class="list-container">
+      <app-result-list
+        [items]="allergyList"
+        [actions]="actionButtons"
+        (actionClick)="handleAction($event)"
+      ></app-result-list>
+    </div>
+  </div>
+
+  
+
+</div>
+
+

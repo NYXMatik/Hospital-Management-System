@@ -1,0 +1,102 @@
+<div class="form-container">
+  <button (click)="toggleExpansion()">
+    {{ isExpanded ? '▲' : '▼' }}
+  </button>
+
+  <h2>Medical Records</h2>
+
+  <div *ngIf="isExpanded" class="form-content">
+    <div class="search-forms">
+      <div *ngIf="error" class="error-message">
+        <p>{{ error }}</p>
+      </div>
+
+      <div *ngIf="success" class="success-message">
+        <p>{{ success }}</p>
+      </div>
+
+      <div *ngIf="isLoading" class="loading">
+        <p>Loading...</p>
+      </div>
+
+      <div class="search-form">
+        <label for="searchTerm">Patient Name:</label>
+        <input type="text" id="searchTerm" [(ngModel)]="searchTerm" placeholder="Search by patient name">
+        <button (click)="searchRecords()">Search</button>
+      </div>
+    </div>
+
+    <div class="list-container">
+      <div *ngIf="!isLoading && records.length > 0" class="list">
+        <ul>
+          <li *ngFor="let record of records">
+            <p><strong>{{ record.patientName || 'N/A' }}</strong></p>
+            <button (click)="openDetailsModal(record)">View Details</button>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="!isLoading && records.length === 0">
+        <p>No medical records found.</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isDetailsModalActive && selectedRecord" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2>Medical Record Details</h2>
+        <button class="close-button" (click)="closeDetailsModal()">×</button>
+      </div>
+      <div class="modal-content">
+        <h3>Patient Name: {{selectedRecord.patientName || 'N/A'}}</h3>
+
+        <app-record-list-allergy 
+          [allergies]="selectedRecord.allergies"
+          [isExpanded]="isAllergiesExpanded"
+          (editAllergy)="toggleEditAllergy($event)">
+        </app-record-list-allergy>
+
+        <button (click)="toggleAddAllergy()">Add Allergy</button>
+
+        <div *ngIf="isAddingAllergy">
+          <app-record-add-allergy 
+            [userId]="selectedRecord.userId"
+            (formSubmit)="handleAllergySubmit($event)">
+          </app-record-add-allergy>
+        </div>
+
+        <div *ngIf="isEditingAllergy && selectedAllergy">
+          <app-record-update-allergy 
+            [userId]="selectedRecord.userId"
+            [allergy]="selectedAllergy"
+            (formSubmit)="handleAllergyUpdate($event)">
+          </app-record-update-allergy>
+        </div>
+
+        <app-record-list-condition 
+        [conditions]="selectedRecord.medicalConditions"
+        [isExpanded]="isConditionsExpanded"
+        (editCondition)="toggleEditCondition($event)">
+        </app-record-list-condition>
+
+        <button (click)="toggleAddCondition()">Add Condition</button>
+
+        <div *ngIf="isAddingCondition">
+          <app-record-add-condition 
+            [userId]="selectedRecord.userId"
+            (formSubmit)="handleConditionSubmit($event)">
+          </app-record-add-condition>
+        </div>
+
+        <div *ngIf="isEditingCondition && selectedCondition">
+          <app-record-update-condition 
+            [userId]="selectedRecord.userId"
+            [condition]="selectedCondition"
+            (formSubmit)="handleConditionUpdate($event)">
+          </app-record-update-condition>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

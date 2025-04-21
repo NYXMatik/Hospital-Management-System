@@ -1,0 +1,35 @@
+@startuml UpdatePatient
+title Delete Account - GDPR Compliance
+
+actor Patient as P
+participant "DeleteAccountComponent" as DAC
+participant "HttpClient" as HC
+participant "PatientAccount API" as API
+participant "Router (Angular)" as Router
+
+P -> DAC: Click "Delete My Account"
+DAC -> DAC: Confirm deletion prompt
+alt User confirms deletion
+    DAC -> DAC: Retrieve user ID from localStorage
+    alt User ID exists
+        DAC -> HC: DELETE /PatientAccount/{userId}
+        HC -> API: Process delete request
+        API --> HC: 200 OK
+        HC --> DAC: Success response
+        DAC -> DAC: Clear localStorage
+        DAC -> Router: Navigate to /login
+        Router --> P: Redirect to Login Page
+    else User ID missing
+        DAC -> P: Show alert "User ID is missing"
+    end
+else User cancels deletion
+    DAC -> P: Do nothing
+end
+
+alt Deletion fails
+    API --> HC: Error response
+    HC --> DAC: Pass error
+    DAC -> P: Show error message
+end
+
+@enduml
